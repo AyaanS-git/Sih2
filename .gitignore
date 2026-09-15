@@ -1,0 +1,16 @@
+﻿.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+*.class
+venv/
+.venv/
+env/
+dist/
+build/
+*.egg-info/
+node_modules/
+.DS_Store
+Thumbs.db
+uploads/
