@@ -1433,6 +1433,14 @@ function MediKioskApp() {
   const [ayushRatings, setAyushRatings] = useState(initialClassicalAyushData);
   const [activeAyushModalCard, setActiveAyushModalCard] = useState(null);
 
+  // AYUSH Sub-system Selection & Assessment States (Yoga, Unani, Siddha, Homeopathy)
+  const [selectedAyushSystem, setSelectedAyushSystem] = useState('ayurveda'); // 'ayurveda' | 'yoga' | 'unani' | 'siddha' | 'homeopathy'
+  const [yogaRatings, setYogaRatings] = useState(window.initialYogaData || {});
+  const [unaniRatings, setUnaniRatings] = useState(window.initialUnaniData || {});
+  const [siddhaRatings, setSiddhaRatings] = useState(window.initialSiddhaData || {});
+  const [homeopathyRatings, setHomeopathyRatings] = useState(window.initialHomeopathyData || {});
+  const [activeSystemModalCard, setActiveSystemModalCard] = useState(null);
+
   // Document Upload & OCR State (Screen 6 & 7)
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isOcrProcessing, setIsOcrProcessing] = useState(false);
@@ -1736,8 +1744,11 @@ function MediKioskApp() {
     navigateTo('mode');
   };
 
-  const handleSelectModeAndStartConsultation = async (mode) => {
+  const handleSelectModeAndStartConsultation = async (mode, ayushSys = 'ayurveda') => {
     setConsultationMode(mode);
+    if (mode === 'ayush') {
+      setSelectedAyushSystem(ayushSys);
+    }
     unlockAudioContext();
 
     try {
@@ -1838,7 +1849,7 @@ function MediKioskApp() {
   const handleProceedFromAiChat = () => {
     stopSpeaking();
     if (consultationMode === 'ayush') {
-      navigateTo('ayurveda');
+      navigateTo(selectedAyushSystem || 'ayurveda');
     } else {
       navigateTo('documents');
     }
@@ -2156,7 +2167,7 @@ function MediKioskApp() {
   const renderStepperHeader = () => {
     if (currentRoute === 'login') return null;
 
-    const routeOrder = ['patient-info', 'mode', 'ai-chat', 'ayurveda', 'documents', 'ocr-loading', 'summary-review', 'final-summary'];
+    const routeOrder = ['patient-info', 'mode', 'ai-chat', 'ayurveda', 'yoga', 'unani', 'siddha', 'homeopathy', 'documents', 'ocr-loading', 'summary-review', 'final-summary'];
     const currentIdx = routeOrder.indexOf(currentRoute);
 
     const steps = [
@@ -2171,7 +2182,7 @@ function MediKioskApp() {
     const getActiveStepNumber = () => {
       if (currentRoute === 'patient-info') return 1;
       if (currentRoute === 'mode') return 2;
-      if (currentRoute === 'ai-chat' || currentRoute === 'ayurveda') return 3;
+      if (currentRoute === 'ai-chat' || currentRoute === 'ayurveda' || currentRoute === 'yoga' || currentRoute === 'unani' || currentRoute === 'siddha' || currentRoute === 'homeopathy') return 3;
       if (currentRoute === 'documents' || currentRoute === 'ocr-loading') return 4;
       if (currentRoute === 'summary-review') return 5;
       if (currentRoute === 'final-summary') return 6;
@@ -2663,8 +2674,7 @@ function MediKioskApp() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* AYUSH Card */}
         <div
-          onClick={() => handleSelectModeAndStartConsultation('ayush')}
-          className={`p-6 sm:p-8 rounded-3xl border-2 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-xl ${
+          className={`p-6 sm:p-8 rounded-3xl border-2 transition-all duration-300 flex flex-col justify-between shadow-sm hover:shadow-xl ${
             consultationMode === 'ayush'
               ? 'border-brand-600 bg-emerald-50/60 ring-2 ring-brand-500'
               : 'border-slate-200 bg-white hover:border-brand-400'
@@ -2673,30 +2683,88 @@ function MediKioskApp() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <span className="text-4xl">🌿</span>
-              {consultationMode === 'ayush' && (
-                <span className="px-3 py-1 bg-brand-600 text-white text-xs font-bold rounded-full">
-                  {t.selectedBadge}
-                </span>
-              )}
+              <span className="px-3 py-1 bg-emerald-100 text-brand-800 text-xs font-bold rounded-full">
+                Ministry of AYUSH
+              </span>
             </div>
             <h3 className="text-xl font-extrabold text-slate-900">{t.ayushTitle}</h3>
-            <p className="text-xs text-slate-500 mt-1 font-medium">{t.ayushTagline}</p>
+            <p className="text-xs text-slate-500 mt-1 font-medium">Select your preferred AYUSH system for specialized assessment:</p>
 
-            <div className="mt-6 space-y-2 border-t border-slate-100 pt-4 text-xs font-medium text-slate-600">
-              <p className="font-bold text-slate-800 text-[11px] uppercase tracking-wider">{t.ayushIncludes}</p>
-              <p>• {t.ayushP1}</p>
-              <p>• {t.ayushP2}</p>
-              <p>• {t.ayushP3}</p>
-              <p>• {t.ayushP4}</p>
-              <p>• {t.ayushP5}</p>
+            {/* 5 AYUSH System Selector Pills */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => handleSelectModeAndStartConsultation('ayush', 'ayurveda')}
+                className={`p-2.5 rounded-xl border text-left text-xs font-bold transition flex items-center justify-between cursor-pointer ${
+                  consultationMode === 'ayush' && selectedAyushSystem === 'ayurveda'
+                    ? 'bg-brand-600 text-white border-brand-700 shadow-sm'
+                    : 'bg-slate-50 hover:bg-emerald-50 text-slate-800 border-slate-200'
+                }`}
+              >
+                <span>🌿 Ayurveda (दशविध परीक्षा)</span>
+                <span>→</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleSelectModeAndStartConsultation('ayush', 'yoga')}
+                className={`p-2.5 rounded-xl border text-left text-xs font-bold transition flex items-center justify-between cursor-pointer ${
+                  consultationMode === 'ayush' && selectedAyushSystem === 'yoga'
+                    ? 'bg-brand-600 text-white border-brand-700 shadow-sm'
+                    : 'bg-slate-50 hover:bg-emerald-50 text-slate-800 border-slate-200'
+                }`}
+              >
+                <span>🧘 Yoga & Naturopathy</span>
+                <span>→</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleSelectModeAndStartConsultation('ayush', 'unani')}
+                className={`p-2.5 rounded-xl border text-left text-xs font-bold transition flex items-center justify-between cursor-pointer ${
+                  consultationMode === 'ayush' && selectedAyushSystem === 'unani'
+                    ? 'bg-amber-600 text-white border-amber-700 shadow-sm'
+                    : 'bg-slate-50 hover:bg-amber-50 text-slate-800 border-slate-200'
+                }`}
+              >
+                <span>🏺 Unani (طب یونانی)</span>
+                <span>→</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleSelectModeAndStartConsultation('ayush', 'siddha')}
+                className={`p-2.5 rounded-xl border text-left text-xs font-bold transition flex items-center justify-between cursor-pointer ${
+                  consultationMode === 'ayush' && selectedAyushSystem === 'siddha'
+                    ? 'bg-teal-600 text-white border-teal-700 shadow-sm'
+                    : 'bg-slate-50 hover:bg-teal-50 text-slate-800 border-slate-200'
+                }`}
+              >
+                <span>🍃 Siddha (சித்த மருத்துவம்)</span>
+                <span>→</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleSelectModeAndStartConsultation('ayush', 'homeopathy')}
+                className={`p-2.5 rounded-xl border text-left text-xs font-bold transition flex items-center justify-between cursor-pointer sm:col-span-2 ${
+                  consultationMode === 'ayush' && selectedAyushSystem === 'homeopathy'
+                    ? 'bg-cyan-600 text-white border-cyan-700 shadow-sm'
+                    : 'bg-slate-50 hover:bg-cyan-50 text-slate-800 border-slate-200'
+                }`}
+              >
+                <span>💧 Homeopathy (Organon of Medicine)</span>
+                <span>→</span>
+              </button>
             </div>
           </div>
 
           <button
             type="button"
-            className="w-full mt-6 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-xl transition shadow"
+            onClick={() => handleSelectModeAndStartConsultation('ayush', selectedAyushSystem || 'ayurveda')}
+            className="w-full mt-4 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition shadow cursor-pointer"
           >
-            {t.selectAyushBtn} →
+            Start AYUSH Consultation ({(selectedAyushSystem || 'ayurveda').toUpperCase()}) →
           </button>
         </div>
 
@@ -3080,6 +3148,559 @@ function MediKioskApp() {
     );
   };
 
+
+  // -------------------------------------------------------------
+  // SCREEN 5B: YOGA & NATUROPATHY ASSESSMENT (10-FOLD CLINICAL EVALUATION)
+  // -------------------------------------------------------------
+  const renderScreenYoga = () => {
+    const yogaData = Object.keys(yogaRatings).length > 0 ? yogaRatings : (window.initialYogaData || {});
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+        <div className="text-center mb-8">
+          <span className="px-3.5 py-1 bg-emerald-100 text-brand-700 text-xs font-bold rounded-full">
+            AYUSH Case Taking — Yoga & Naturopathy Protocol
+          </span>
+          <h2 className="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">Yoga & Naturopathy Assessment</h2>
+          <p className="text-sm text-slate-500 mt-1 max-w-2xl mx-auto">
+            Ministry of AYUSH Standardized 10-Fold Assessment across Asana, Pranayama, Dhyana, Shatkriya & Naturopathic Modalities.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {Object.entries(yogaData).map(([key, card]) => {
+            const hasStatus = Boolean(card.status && card.status.trim());
+            return (
+              <div
+                key={key}
+                onClick={() => setActiveSystemModalCard({ system: 'yoga', key, ...card })}
+                className={`p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-lg ${
+                  hasStatus ? 'bg-emerald-50/90 border-emerald-400 hover:border-brand-600' : 'bg-white border-slate-200 hover:border-emerald-300'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-3xl">{card.icon}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        unlockAudioContext();
+                        speakText(`${card.term}. ${card.sanskrit}. ${card.desc}`, selectedLanguage);
+                      }}
+                      className="text-xs font-bold text-brand-700 hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      🔊
+                    </button>
+                  </div>
+                  <h3 className="font-extrabold text-slate-900 text-sm leading-tight">{card.term}</h3>
+                  <p className="text-xs font-bold text-brand-700 mt-0.5">{card.sanskrit}</p>
+                  <p className="text-[11px] text-slate-600 mt-1.5 leading-snug">
+                    {card.plainDesc && card.plainDesc[selectedLanguage] ? card.plainDesc[selectedLanguage] : card.desc}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <span className={`block text-center py-1.5 px-2 rounded-lg text-xs font-black shadow-sm flex-1 ${
+                    hasStatus ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-500 border border-slate-300'
+                  }`}>
+                    {hasStatus ? card.status : t.changeAyushStatus}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Modal: Yoga Option Selector */}
+        {activeSystemModalCard && activeSystemModalCard.system === 'yoga' && (
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-emerald-200 text-left">
+              <button
+                onClick={() => setActiveSystemModalCard(null)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-xl cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <span className="text-4xl">{activeSystemModalCard.icon}</span>
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900">{activeSystemModalCard.term}</h3>
+                  <p className="text-xs font-bold text-brand-700">{activeSystemModalCard.sanskrit} • {activeSystemModalCard.desc}</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase mb-2">
+                  {t.modalSelectTitle} {activeSystemModalCard.term}:
+                </p>
+                <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                  {activeSystemModalCard.options.map((opt) => {
+                    const optLabel = typeof opt === 'string' ? opt : opt.label;
+                    const optPlain = typeof opt === 'object' ? opt.plain : '';
+                    const isSelected = activeSystemModalCard.status === optLabel;
+
+                    return (
+                      <button
+                        key={optLabel}
+                        onClick={() => {
+                          setYogaRatings(prev => ({
+                            ...prev,
+                            [activeSystemModalCard.key]: { ...(prev[activeSystemModalCard.key] || activeSystemModalCard), status: optLabel }
+                          }));
+                          setActiveSystemModalCard(null);
+                          showToast(`Updated ${activeSystemModalCard.term}`);
+                        }}
+                        className={`w-full text-left p-3.5 rounded-xl transition border cursor-pointer ${
+                          isSelected ? 'bg-brand-600 text-white border-brand-700 shadow-md' : 'bg-slate-50 hover:bg-emerald-50 text-slate-800 border-slate-200'
+                        }`}
+                      >
+                        <div className="font-extrabold text-xs">{optLabel}</div>
+                        {optPlain && (
+                          <div className={`text-[11px] mt-0.5 ${isSelected ? 'text-emerald-100' : 'text-slate-500'}`}>
+                            {optPlain}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mt-8">
+          <button
+            onClick={() => navigateTo('ai-chat')}
+            className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition cursor-pointer"
+          >
+            {t.backBtn}
+          </button>
+          <button
+            onClick={() => navigateTo('documents')}
+            className="px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-base rounded-xl shadow-lg transition cursor-pointer"
+          >
+            {t.continueBtn}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // -------------------------------------------------------------
+  // SCREEN 5C: UNANI MEDICINE ASSESSMENT (TIBB-E-UNANI / 10-FOLD CLINICAL DIAGNOSIS)
+  // -------------------------------------------------------------
+  const renderScreenUnani = () => {
+    const unaniData = Object.keys(unaniRatings).length > 0 ? unaniRatings : (window.initialUnaniData || {});
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+        <div className="text-center mb-8">
+          <span className="px-3.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full">
+            AYUSH Case Taking — Tibb-e-Unani (Unani Medicine)
+          </span>
+          <h2 className="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">Unani Clinical Assessment (طب یونانی)</h2>
+          <p className="text-sm text-slate-500 mt-1 max-w-2xl mx-auto">
+            Ministry of AYUSH Standardized 10-Fold Assessment across Mizaj, Akhlat-e-Arba, Nabz, Baul-o-Baraz & Asbab Sittah.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {Object.entries(unaniData).map(([key, card]) => {
+            const hasStatus = Boolean(card.status && card.status.trim());
+            return (
+              <div
+                key={key}
+                onClick={() => setActiveSystemModalCard({ system: 'unani', key, ...card })}
+                className={`p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-lg ${
+                  hasStatus ? 'bg-amber-50/90 border-amber-400 hover:border-amber-600' : 'bg-white border-slate-200 hover:border-amber-300'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-3xl">{card.icon}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        unlockAudioContext();
+                        speakText(`${card.term}. ${card.desc}`, selectedLanguage);
+                      }}
+                      className="text-xs font-bold text-amber-700 hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      🔊
+                    </button>
+                  </div>
+                  <h3 className="font-extrabold text-slate-900 text-sm leading-tight">{card.term}</h3>
+                  <p className="text-xs font-bold text-amber-700 mt-0.5">{card.sanskrit}</p>
+                  <p className="text-[11px] text-slate-600 mt-1.5 leading-snug">
+                    {card.plainDesc && card.plainDesc[selectedLanguage] ? card.plainDesc[selectedLanguage] : card.desc}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <span className={`block text-center py-1.5 px-2 rounded-lg text-xs font-black shadow-sm flex-1 ${
+                    hasStatus ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-500 border border-slate-300'
+                  }`}>
+                    {hasStatus ? card.status : t.changeAyushStatus}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Modal: Unani Option Selector */}
+        {activeSystemModalCard && activeSystemModalCard.system === 'unani' && (
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-amber-200 text-left">
+              <button
+                onClick={() => setActiveSystemModalCard(null)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-xl cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <span className="text-4xl">{activeSystemModalCard.icon}</span>
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900">{activeSystemModalCard.term}</h3>
+                  <p className="text-xs font-bold text-amber-700">{activeSystemModalCard.sanskrit} • {activeSystemModalCard.desc}</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase mb-2">
+                  {t.modalSelectTitle} {activeSystemModalCard.term}:
+                </p>
+                <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                  {activeSystemModalCard.options.map((opt) => {
+                    const optLabel = typeof opt === 'string' ? opt : opt.label;
+                    const optPlain = typeof opt === 'object' ? opt.plain : '';
+                    const isSelected = activeSystemModalCard.status === optLabel;
+
+                    return (
+                      <button
+                        key={optLabel}
+                        onClick={() => {
+                          setUnaniRatings(prev => ({
+                            ...prev,
+                            [activeSystemModalCard.key]: { ...(prev[activeSystemModalCard.key] || activeSystemModalCard), status: optLabel }
+                          }));
+                          setActiveSystemModalCard(null);
+                          showToast(`Updated ${activeSystemModalCard.term}`);
+                        }}
+                        className={`w-full text-left p-3.5 rounded-xl transition border cursor-pointer ${
+                          isSelected ? 'bg-amber-600 text-white border-amber-700 shadow-md' : 'bg-slate-50 hover:bg-amber-50 text-slate-800 border-slate-200'
+                        }`}
+                      >
+                        <div className="font-extrabold text-xs">{optLabel}</div>
+                        {optPlain && (
+                          <div className={`text-[11px] mt-0.5 ${isSelected ? 'text-amber-100' : 'text-slate-500'}`}>
+                            {optPlain}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mt-8">
+          <button
+            onClick={() => navigateTo('ai-chat')}
+            className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition cursor-pointer"
+          >
+            {t.backBtn}
+          </button>
+          <button
+            onClick={() => navigateTo('documents')}
+            className="px-8 py-3.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-base rounded-xl shadow-lg transition cursor-pointer"
+          >
+            {t.continueBtn}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // -------------------------------------------------------------
+  // SCREEN 5D: SIDDHA MEDICINE ASSESSMENT (SIDDHA MARUTHUVAM / 10-FOLD CLINICAL DIAGNOSIS)
+  // -------------------------------------------------------------
+  const renderScreenSiddha = () => {
+    const siddhaData = Object.keys(siddhaRatings).length > 0 ? siddhaRatings : (window.initialSiddhaData || {});
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+        <div className="text-center mb-8">
+          <span className="px-3.5 py-1 bg-teal-100 text-teal-800 text-xs font-bold rounded-full">
+            AYUSH Case Taking — Siddha Maruthuvam (சித்த மருத்துவம்)
+          </span>
+          <h2 className="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">Siddha Clinical Assessment (சித்த மருத்துவம்)</h2>
+          <p className="text-sm text-slate-500 mt-1 max-w-2xl mx-auto">
+            Ministry of AYUSH Standardized 10-Fold Assessment across Mukkuttram, Envagai Thervu, Neykkuri & Udal Thathukkal.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {Object.entries(siddhaData).map(([key, card]) => {
+            const hasStatus = Boolean(card.status && card.status.trim());
+            return (
+              <div
+                key={key}
+                onClick={() => setActiveSystemModalCard({ system: 'siddha', key, ...card })}
+                className={`p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-lg ${
+                  hasStatus ? 'bg-teal-50/90 border-teal-400 hover:border-teal-600' : 'bg-white border-slate-200 hover:border-teal-300'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-3xl">{card.icon}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        unlockAudioContext();
+                        speakText(`${card.term}. ${card.desc}`, selectedLanguage);
+                      }}
+                      className="text-xs font-bold text-teal-700 hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      🔊
+                    </button>
+                  </div>
+                  <h3 className="font-extrabold text-slate-900 text-sm leading-tight">{card.term}</h3>
+                  <p className="text-xs font-bold text-teal-700 mt-0.5">{card.sanskrit}</p>
+                  <p className="text-[11px] text-slate-600 mt-1.5 leading-snug">
+                    {card.plainDesc && card.plainDesc[selectedLanguage] ? card.plainDesc[selectedLanguage] : card.desc}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <span className={`block text-center py-1.5 px-2 rounded-lg text-xs font-black shadow-sm flex-1 ${
+                    hasStatus ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500 border border-slate-300'
+                  }`}>
+                    {hasStatus ? card.status : t.changeAyushStatus}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Modal: Siddha Option Selector */}
+        {activeSystemModalCard && activeSystemModalCard.system === 'siddha' && (
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-teal-200 text-left">
+              <button
+                onClick={() => setActiveSystemModalCard(null)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-xl cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <span className="text-4xl">{activeSystemModalCard.icon}</span>
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900">{activeSystemModalCard.term}</h3>
+                  <p className="text-xs font-bold text-teal-700">{activeSystemModalCard.sanskrit} • {activeSystemModalCard.desc}</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase mb-2">
+                  {t.modalSelectTitle} {activeSystemModalCard.term}:
+                </p>
+                <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                  {activeSystemModalCard.options.map((opt) => {
+                    const optLabel = typeof opt === 'string' ? opt : opt.label;
+                    const optPlain = typeof opt === 'object' ? opt.plain : '';
+                    const isSelected = activeSystemModalCard.status === optLabel;
+
+                    return (
+                      <button
+                        key={optLabel}
+                        onClick={() => {
+                          setSiddhaRatings(prev => ({
+                            ...prev,
+                            [activeSystemModalCard.key]: { ...(prev[activeSystemModalCard.key] || activeSystemModalCard), status: optLabel }
+                          }));
+                          setActiveSystemModalCard(null);
+                          showToast(`Updated ${activeSystemModalCard.term}`);
+                        }}
+                        className={`w-full text-left p-3.5 rounded-xl transition border cursor-pointer ${
+                          isSelected ? 'bg-teal-600 text-white border-teal-700 shadow-md' : 'bg-slate-50 hover:bg-teal-50 text-slate-800 border-slate-200'
+                        }`}
+                      >
+                        <div className="font-extrabold text-xs">{optLabel}</div>
+                        {optPlain && (
+                          <div className={`text-[11px] mt-0.5 ${isSelected ? 'text-teal-100' : 'text-slate-500'}`}>
+                            {optPlain}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mt-8">
+          <button
+            onClick={() => navigateTo('ai-chat')}
+            className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition cursor-pointer"
+          >
+            {t.backBtn}
+          </button>
+          <button
+            onClick={() => navigateTo('documents')}
+            className="px-8 py-3.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-base rounded-xl shadow-lg transition cursor-pointer"
+          >
+            {t.continueBtn}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // -------------------------------------------------------------
+  // SCREEN 5E: HOMEOPATHY ASSESSMENT (ORGANON OF MEDICINE / 10-FOLD CLINICAL DIAGNOSIS)
+  // -------------------------------------------------------------
+  const renderScreenHomeopathy = () => {
+    const homeopathyData = Object.keys(homeopathyRatings).length > 0 ? homeopathyRatings : (window.initialHomeopathyData || {});
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+        <div className="text-center mb-8">
+          <span className="px-3.5 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold rounded-full">
+            AYUSH Case Taking — Homeopathy (Organon of Medicine)
+          </span>
+          <h2 className="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">Homeopathic Clinical Assessment</h2>
+          <p className="text-sm text-slate-500 mt-1 max-w-2xl mx-auto">
+            Ministry of AYUSH Standardized 10-Fold Assessment across Similimum, Vital Force, Miasms, Modalities & Generals.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {Object.entries(homeopathyData).map(([key, card]) => {
+            const hasStatus = Boolean(card.status && card.status.trim());
+            return (
+              <div
+                key={key}
+                onClick={() => setActiveSystemModalCard({ system: 'homeopathy', key, ...card })}
+                className={`p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-lg ${
+                  hasStatus ? 'bg-cyan-50/90 border-cyan-400 hover:border-cyan-600' : 'bg-white border-slate-200 hover:border-cyan-300'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-3xl">{card.icon}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        unlockAudioContext();
+                        speakText(`${card.term}. ${card.desc}`, selectedLanguage);
+                      }}
+                      className="text-xs font-bold text-cyan-700 hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      🔊
+                    </button>
+                  </div>
+                  <h3 className="font-extrabold text-slate-900 text-sm leading-tight">{card.term}</h3>
+                  <p className="text-xs font-bold text-cyan-700 mt-0.5">{card.sanskrit}</p>
+                  <p className="text-[11px] text-slate-600 mt-1.5 leading-snug">
+                    {card.plainDesc && card.plainDesc[selectedLanguage] ? card.plainDesc[selectedLanguage] : card.desc}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <span className={`block text-center py-1.5 px-2 rounded-lg text-xs font-black shadow-sm flex-1 ${
+                    hasStatus ? 'bg-cyan-600 text-white' : 'bg-slate-100 text-slate-500 border border-slate-300'
+                  }`}>
+                    {hasStatus ? card.status : t.changeAyushStatus}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Modal: Homeopathy Option Selector */}
+        {activeSystemModalCard && activeSystemModalCard.system === 'homeopathy' && (
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-cyan-200 text-left">
+              <button
+                onClick={() => setActiveSystemModalCard(null)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-xl cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <span className="text-4xl">{activeSystemModalCard.icon}</span>
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900">{activeSystemModalCard.term}</h3>
+                  <p className="text-xs font-bold text-cyan-700">{activeSystemModalCard.sanskrit} • {activeSystemModalCard.desc}</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase mb-2">
+                  {t.modalSelectTitle} {activeSystemModalCard.term}:
+                </p>
+                <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                  {activeSystemModalCard.options.map((opt) => {
+                    const optLabel = typeof opt === 'string' ? opt : opt.label;
+                    const optPlain = typeof opt === 'object' ? opt.plain : '';
+                    const isSelected = activeSystemModalCard.status === optLabel;
+
+                    return (
+                      <button
+                        key={optLabel}
+                        onClick={() => {
+                          setHomeopathyRatings(prev => ({
+                            ...prev,
+                            [activeSystemModalCard.key]: { ...(prev[activeSystemModalCard.key] || activeSystemModalCard), status: optLabel }
+                          }));
+                          setActiveSystemModalCard(null);
+                          showToast(`Updated ${activeSystemModalCard.term}`);
+                        }}
+                        className={`w-full text-left p-3.5 rounded-xl transition border cursor-pointer ${
+                          isSelected ? 'bg-cyan-600 text-white border-cyan-700 shadow-md' : 'bg-slate-50 hover:bg-cyan-50 text-slate-800 border-slate-200'
+                        }`}
+                      >
+                        <div className="font-extrabold text-xs">{optLabel}</div>
+                        {optPlain && (
+                          <div className={`text-[11px] mt-0.5 ${isSelected ? 'text-cyan-100' : 'text-slate-500'}`}>
+                            {optPlain}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mt-8">
+          <button
+            onClick={() => navigateTo('ai-chat')}
+            className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition cursor-pointer"
+          >
+            {t.backBtn}
+          </button>
+          <button
+            onClick={() => navigateTo('documents')}
+            className="px-8 py-3.5 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-base rounded-xl shadow-lg transition cursor-pointer"
+          >
+            {t.continueBtn}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   // -------------------------------------------------------------
   // SCREEN 6: SMART DOCUMENT UPLOAD & REAL PREPROCESSED OCR
   // -------------------------------------------------------------
@@ -3193,7 +3814,7 @@ function MediKioskApp() {
 
           <div className="flex items-center justify-between pt-4 border-t border-slate-100">
             <button
-              onClick={() => navigateTo(consultationMode === 'ayush' ? 'ayurveda' : 'ai-chat')}
+              onClick={() => navigateTo(consultationMode === 'ayush' ? (selectedAyushSystem || 'ayurveda') : 'ai-chat')}
               className="px-5 py-3 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
             >
               {t.backBtn}
@@ -3574,6 +4195,10 @@ function MediKioskApp() {
       {currentRoute === 'mode' && renderScreen3Mode()}
       {currentRoute === 'ai-chat' && renderScreen4AiChat()}
       {currentRoute === 'ayurveda' && renderScreen5Ayush()}
+      {currentRoute === 'yoga' && renderScreenYoga()}
+      {currentRoute === 'unani' && renderScreenUnani()}
+      {currentRoute === 'siddha' && renderScreenSiddha()}
+      {currentRoute === 'homeopathy' && renderScreenHomeopathy()}
       {currentRoute === 'documents' && renderScreen6Documents()}
       {currentRoute === 'ocr-loading' && renderScreen7OcrLoading()}
       {currentRoute === 'summary-review' && renderScreen8SummaryReview()}
