@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MediKiosk — AI-Powered Clinical History & Medical Records Digitization Platform</title>
-  
-  <!-- Tailwind CSS -->
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,8 +13,8 @@
           colors: {
             brand: {
               700: '#005536',
-              600: '#006B45', // Primary Dark Green
-              500: '#0A8F5B', // Medium Green
+              600: '#006B45', 
+              500: '#0A8F5B', 
               400: '#10B981',
               100: '#E6F4ED',
               50:  '#F0FDF4',
@@ -35,26 +34,19 @@
     }
   </script>
 
-  <!-- React 18 & ReactDOM 18 -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-  <!-- Babel Standalone for JSX -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- html2pdf for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  <!-- QRCode.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-  <!-- Tesseract.js for Real-Time OCR Document Scanning -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-  <!-- Google Fonts: Inter & Noto Sans Devanagari -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -65,7 +57,6 @@
       -webkit-tap-highlight-color: transparent;
     }
     
-    /* Custom scrollbars */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -109,13 +100,11 @@
 <body class="h-full text-slate-800 antialiased selection:bg-emerald-200">
   <div id="root" class="min-h-screen flex flex-col"></div>
 
-  <!-- Load AYUSH System Modules -->
   <script type="text/babel" src="yoga.jsx"></script>
   <script type="text/babel" src="unani.jsx"></script>
   <script type="text/babel" src="siddha.jsx"></script>
   <script type="text/babel" src="homeopathy.jsx"></script>
 
-  <!-- Load App Script -->
   <script type="text/babel" src="app.jsx"></script>
 </body>
 </html>
