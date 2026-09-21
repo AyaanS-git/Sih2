@@ -23,6 +23,11 @@ function unlockAudioContext() {
 // ============================================================================
 const translations = {
   'English': {
+    samplePills: ["Headache & Acidity", "Stomach pain & burning", "Cough & Chest congestion", "Fever & body ache", "Tiredness & weakness"],
+    askSeverity: "How would you rate the severity of your problem?",
+    askDuration: "How long have you been experiencing this problem?",
+    durationPills: ["1-2 Days", "About 1 Week", "2-4 Weeks", "More than 1 Month"],
+    intakeCompleteMsg: "Thank you! Your symptoms, severity, and duration have been successfully recorded. You can now proceed to consultation evaluation.",
     appName: "MediKiosk",
     appSubtitle: "AI-Powered Clinical History & Medical Records Platform",
     tagline: "One Patient. One History. One Smart Platform.",
@@ -153,6 +158,11 @@ const translations = {
     qrScanInstruction: "Scan this unique QR code at hospital reception or OPD counter to view this patient's verified summary."
   },
   'Hindi (हिंदी)': {
+    samplePills: ["सिरदर्द और एसिडिटी", "पेट दर्द और जलन", "खांसी और सीने में जकड़न", "बुखार और बदन दर्द", "थकान और कमजोरी"],
+    askSeverity: "आप इस समस्या की तीव्रता (Severity) को कैसे आंकेंगे?",
+    askDuration: "आपको यह समस्या कितने समय से (Duration) हो रही है?",
+    durationPills: ["1-2 दिन", "लगभग 1 हफ्ता", "2-4 हफ्ते", "1 महीने से अधिक"],
+    intakeCompleteMsg: "धन्यवाद! आपके लक्षण, तीव्रता और अवधि दर्ज कर ली गई है। अब आप परामर्श मूल्यांकन के लिए आगे बढ़ सकते हैं।",
     appName: "मेडीकियोस्क",
     appSubtitle: "एआई-संचालित क्लिनिकल इतिहास एवं रिकॉर्ड डिजिटलीकरण प्लेटफॉर्म",
     tagline: "एक रोगी। एक इतिहास। एक स्मार्ट प्लेटफॉर्म।",
@@ -283,6 +293,11 @@ const translations = {
     qrScanInstruction: "अस्पताल रिसेप्शन पर रोगी का सत्यापित सारांश देखने के लिए यह क्यूआर कोड स्कैन करें।"
   },
   'Marathi (मराठी)': {
+    samplePills: ["डोकेदुखी आणि ॲसिडिटी", "पोटदुखी आणि जळजळ", "खोकला आणि ताप", "अंगदुखी आणि थकवा", "कमजोरी आणि चक्कर"],
+    askSeverity: "तुम्ही या त्रासाची तीव्रता कशी सांगाल?",
+    askDuration: "हा त्रास तुम्हाला किती दिवसांपासून होत आहे?",
+    durationPills: ["1-2 दिवस", "सुमारे 1 आठवडा", "2-4 आठवडे", "1 महिन्यापेक्षा जास्त"],
+    intakeCompleteMsg: "धन्यवाद! तुमची लक्षणे, तीव्रता आणि कालावधी नोंदवला गेला आहे. आता तुम्ही पुढील टप्प्यावर जाऊ शकता.",
     appName: "मेडीकियोस्क",
     appSubtitle: "एआय-सक्षम क्लिनिकल इतिहास आणि वैद्यकीय नोंदी डिजिटायझेशन प्लॅटफॉर्म",
     tagline: "एक रुग्ण. एक इतिहास. एक स्मार्ट प्लॅटफॉर्म.",
@@ -413,6 +428,11 @@ const translations = {
     qrScanInstruction: "रुग्णालयाच्या काउंटरवर हा क्यूआर कोड स्कॅन करून सत्यापित सारांश पहा."
   },
   'Gujarati (ગુજરાતી)': {
+    samplePills: ["માથાનો દુખાવો અને એસિડિટી", "પેટમાં દુખાવો અને બળતરા", "તાવ અને ઉધરસ", "થાક અને નબળાઈ", "છાતીમાં દુખાવો"],
+    askSeverity: "તમે આ લક્ષણની તીવ્રતા કેટલી ગણાવશો?",
+    askDuration: "તમને આ સમસ્યા કેટલા સમયથી થઈ રહી છે?",
+    durationPills: ["1-2 દિવસ", "લગભગ 1 અઠવાડિયું", "2-4 અઠવાડિયા", "1 મહિનાથી વધુ"],
+    intakeCompleteMsg: "આભાર! તમારા લક્ષણો, તીવ્રતા અને સમયગાળો સફળતાપૂર્વક નોંધાઈ ગયો છે. હવે તમે આગળ વધી શકો છો.",
     appName: "મેડીકિયોસ્ક",
     appSubtitle: "AI ક્લિનિકલ ઇતિહાસ અને રેકોર્ડ ડિજિટાઇઝેશન પ્લેટફોર્મ",
     tagline: "એક દર્દી. એક ઇતિહાસ. એક સ્માર્ટ પ્લેટફોર્મ.",
@@ -521,6 +541,11 @@ const translations = {
     qrScanInstruction: "આ QR કોડ હોસ્પિટલ રિસેપ્શન પર સ્કેન કરો."
   },
   'Bengali (বাংলা)': {
+    samplePills: ["মাথা ব্যথা ও অ্যাসিডিটি", "পেট ব্যথা ও বুকজ্বালা", "জ্বর ও কাশি", "দুর্বলতা ও ক্লান্তি", "শরীরে ব্যথা"],
+    askSeverity: "আপনার সমস্যার তীব্রতা কেমন?",
+    askDuration: "আপনি কতদিন ধরে এই সমস্যাটি অনুভব করছেন?",
+    durationPills: ["1-2 দিন", "প্রায় 1 সপ্তাহ", "2-4 সপ্তাহ", "1 মাসের বেশি"],
+    intakeCompleteMsg: "ধন্যবাদ! আপনার উপসর্গ, তীব্রতা এবং সময়কাল সফলভাবে রেকর্ড করা হয়েছে। আপনি এবার পরবর্তী ধাপে এগিয়ে যেতে পারেন।",
     appName: "মেডিকিয়স্ক",
     appSubtitle: "এআই-চালিত ক্লিনিক্যাল ইতিহাস ও মেডিকেল রেকর্ড ডিজিটাইজেশন প্ল্যাটফর্ম",
     tagline: "একজন রোগী। একটি ইতিহাস। একটি স্মার্ট প্ল্যাটফর্ম।",
@@ -629,6 +654,11 @@ const translations = {
     qrScanInstruction: "হাসপাতাল কাউন্টারে এই কিউআর কোড স্ক্যান করুন।"
   },
   'Tamil (தமிழ்)': {
+    samplePills: ["தலைவலி மற்றும் அசிடிட்டி", "வயிற்று வலி மற்றும் நெஞ்செரிச்சல்", "காய்ச்சல் மற்றும் இருமல்", "சோர்வு மற்றும் பலவீனம்", "உடல் வலி"],
+    askSeverity: "உங்கள் அறிகுறியின் தீவிரத்தை எவ்வாறு மதிப்பிடுவீர்கள்?",
+    askDuration: "இந்த பிரச்சினை உங்களுக்கு எத்தனை நாட்களாக உள்ளது?",
+    durationPills: ["1-2 நாட்கள்", "சுமார் 1 வாரம்", "2-4 வாரங்கள்", "1 மாதத்திற்கும் மேல்"],
+    intakeCompleteMsg: "நன்றி! உங்கள் அறிகுறிகள், தீவிரம் மற்றும் கால அளவு வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது. நீங்கள் அடுத்த கட்டத்திற்கு தொடரலாம்.",
     appName: "மெடிகியோஸ்க்",
     appSubtitle: "AI மருத்துவ வரலாறு & ஆவணங்கள் தளவியல்",
     tagline: "ஒரு நோயாளி. ஒரு வரலாறு. ஒரு ஸ்மார்ட் தளம்.",
@@ -737,6 +767,11 @@ const translations = {
     qrScanInstruction: "மருத்துவமனை கவுண்டரில் இந்த QR குறியீட்டை ஸ்கேன் செய்யவும்."
   },
   'Telugu (తెలుగు)': {
+    samplePills: ["తలనొప్పి మరియు ఎసిడిటీ", "కడుపు నొప్పి మరియు మంట", "జ్వరం మరియు దగ్గు", "నీరసం మరియు అలసట", "ఒంటి నొప్పులు"],
+    askSeverity: "మీ సమస్య యొక్క తీవ్రతను ఎలా అంచना వేస్తారు?",
+    askDuration: "ఈ సమస్య మీకు ఎంత కాలం నుండి ఉంది?",
+    durationPills: ["1-2 రోజులు", "సుమారు 1 వారం", "2-4 వారాలు", "1 నెల కంటే ఎక్కువ"],
+    intakeCompleteMsg: "ధన్యవాదాలు! మీ లక్షణాలు, తీవ్రత మరియు వ్యవధి విజయవంతంగా నమోదు చేయబడ్డాయి. మీరు తదుపరి దశకు కొనసాగవచ్చు.",
     appName: "మెడికియోస్క్",
     appSubtitle: "AI క్లినికల్ హిస్టరీ & మెడికల్ రికార్డ్స్ వేదిక",
     tagline: "ఒక రోగి. ఒక చరిత్ర. ఒక స్మార్ట్ ప్లాట్‌ఫారమ్.",
@@ -845,6 +880,11 @@ const translations = {
     qrScanInstruction: "ఆసుపత్రి కౌంటర్ వద్ద ఈ QR కోడ్‌ని స్కాన్ చేయండి."
   },
   'Kannada (ಕನ್ನಡ)': {
+    samplePills: ["ತಲೆನೋವು ಮತ್ತು ಅಸಿಡಿಟಿ", "ಹೊಟ್ಟೆ ನೋವು ಮತ್ತು ಉರಿ", "ಜ್ವರ ಮತ್ತು ಕೆಮ್ಮು", "ಆಯಾಸ ಮತ್ತು ದೌರ್ಬಲ್ಯ", "ಮೈಕೈ ನೋವು"],
+    askSeverity: "ನಿಮ್ಮ ಸಮಸ್ಯೆಯ ತೀವ್ರತೆ ಎಷ್ಟಿದೆ?",
+    askDuration: "ಈ ಸಮಸ್ಯೆ ನಿಮಗೆ ಎಷ್ಟು ಸಮಯದಿಂದ ಇದೆ?",
+    durationPills: ["1-2 ದಿನಗಳು", "ಸುಮಾರು 1 ವಾರ", "2-4 ವಾರಗಳು", "1 ತಿಂಗಳಿಗಿಂತ ಹೆಚ್ಚು"],
+    intakeCompleteMsg: "ಧನ್ಯವಾದಗಳು! ನಿಮ್ಮ ಲಕ್ಷಣಗಳು, ತೀವ್ರತೆ ಮತ್ತು ಅವಧಿ ಯಶಸ್ವಿಯಾಗಿ ದಾಖಲಾಗಿದೆ. ನೀವು ಮುಂದಿನ ಹಂತಕ್ಕೆ ಮುಂದುವರಿಯಬಹುದು.",
     appName: "ಮೆಡಿಕಿಯೋಸ್ಕ್",
     appSubtitle: "AI ಕ್ಲಿನಿಕಲ್ ಇತಿಹಾಸ ಮತ್ತು ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳ ಡಿಜಿಟಲೀಕರಣ ವೇದಿಕೆ",
     tagline: "ಒಬ್ಬ ರೋಗಿ. ಒಂದು ಇತಿಹಾಸ. ಒಂದು ಸ್ಮಾರ್ಟ್ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್.",
@@ -953,6 +993,11 @@ const translations = {
     qrScanInstruction: "ಆಸ್ಪತ್ರೆ ಕೌಂಟರ್‌ನಲ್ಲಿ ಈ QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ."
   },
   'Malayalam (മലയാളം)': {
+    samplePills: ["തലവേദനയും അസിഡിറ്റിയും", "വയറുവേദനയും എരിച്ചിലും", "പനിയും ചുമയും", "ക്ഷീണവും തളർച്ചയും", "ശരീരവേദന"],
+    askSeverity: "നിങ്ങളുടെ ബുദ്ധിമുട്ടിന്റെ തീവ്രത എത്രയാണ്?",
+    askDuration: "ഈ പ്രശ്നം നിങ്ങൾക്ക് എത്ര നാളായിട്ടുണ്ട്?",
+    durationPills: ["1-2 ദിവസം", "ഏകദേശം 1 ആഴ്ച", "2-4 ആഴ്ചകൾ", "1 മാസത്തിൽ കൂടുതൽ"],
+    intakeCompleteMsg: "നന്ദി! നിങ്ങളുടെ ലക്ഷണങ്ങളും തീവ്രതയും ദൈർഘ്യവും വിജയകരമായി രേഖപ്പെടുത്തിയിട്ടുണ്ട്. ഇനി നിങ്ങൾക്ക് മുന്നോട്ട് പോകാം.",
     appName: "മെഡികിയോസ്ക്",
     appSubtitle: "AI ക്ലിനിക്കൽ ഹിസ്റ്ററി & മെഡിക്കൽ റെക്കോർഡ്സ് ഡിജിറ്റലൈസേഷൻ പ്ലാറ്റ്‌ഫോം",
     tagline: "ഒരു രോഗി. ഒരു ചരിത്രം. ഒരു സ്മാർട്ട് പ്ലാറ്റ്ഫോം.",
@@ -1062,7 +1107,11 @@ const translations = {
   }
 };
 
-const getI18n = (lang) => translations[lang] || translations['English'];
+const getI18n = (lang) => {
+  const base = translations['English'] || {};
+  const current = translations[lang] || {};
+  return { ...base, ...current };
+};
 
 // ============================================================================
 // Classical Dashavidha Pariksha Data (Initially unselected with plain-language descriptions)
@@ -2185,8 +2234,20 @@ function MediKioskApp() {
     photoUrl: ''
   });
 
+  const AVAILABLE_LANGUAGES = [
+    'English',
+    'Hindi (हिंदी)',
+    'Marathi (मराठी)',
+    'Gujarati (ગુજરાતી)',
+    'Bengali (বাংলা)',
+    'Tamil (தமிழ்)',
+    'Telugu (తెలుగు)',
+    'Kannada (ಕನ್ನಡ)',
+    'Malayalam (മലയാളം)'
+  ];
+
   // Global Language Selector
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [selectedLanguage, setSelectedLanguage] = useState(() => localStorage.getItem('medikiosk_language') || 'English');
 
   // Speech Voice State
   const [isSpeakingAudio, setIsSpeakingAudio] = useState(false);
@@ -2647,7 +2708,133 @@ function MediKioskApp() {
   };
 
   // Advance after AI Chat finishes
-  const handleProceedFromAiChat = () => {
+
+  // Smooth Multilingual Switcher with Audio Synchronization
+  const handleLanguageChange = (newLang) => {
+    stopSpeaking();
+    setSelectedLanguage(newLang);
+    try {
+      localStorage.setItem('medikiosk_language', newLang);
+    } catch (e) {}
+
+    const newT = getI18n(newLang);
+    // If on AI Chat and only initial greeting is present, refresh it to new language
+    if (chatMessages.length <= 1) {
+      const initialMsg = { id: Date.now(), sender: 'ai', text: newT.greetingMsg, stage: 'symptoms' };
+      setChatMessages([initialMsg]);
+      if (currentRoute === 'ai-chat') {
+        speakText(newT.greetingMsg, newLang);
+      }
+    }
+    showToast(`Language switched to ${newLang}`);
+  };
+
+  // Clinical AI Assistant Stage Handlers (Pill Options -> Severity -> Duration -> Complete)
+  const handleSelectSymptom = async (symptomText) => {
+    stopSpeaking();
+    unlockAudioContext();
+    const userMsg = { id: Date.now(), sender: 'user', text: symptomText, stage: 'symptoms' };
+    setChatMessages(prev => [...prev, userMsg]);
+    setExtractedSymptoms(prev => Array.from(new Set([...prev, symptomText])));
+    setEditableSummary(prev => ({
+      ...prev,
+      chiefComplaint: symptomText
+    }));
+
+    setIntakeStage('severity');
+    const aiQuestion = t.askSeverity || "How severe is your symptom right now? Please select Mild, Moderate, or Severe.";
+    const aiMsg = { id: Date.now() + 1, sender: 'ai', text: aiQuestion, stage: 'severity' };
+    setChatMessages(prev => [...prev, aiMsg]);
+    speakText(aiQuestion, selectedLanguage);
+
+    if (sessionToken) {
+      try {
+        fetch('/api/consultation/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionToken,
+            message: symptomText,
+            language: selectedLanguage,
+            currentStage: 'symptoms'
+          })
+        }).catch(() => {});
+      } catch (e) {}
+    }
+  };
+
+  const handleSelectSeverity = (sev) => {
+    stopSpeaking();
+    unlockAudioContext();
+    setSymptomSeverity(sev);
+    const userMsg = { id: Date.now(), sender: 'user', text: `Severity: ${sev}`, stage: 'severity' };
+    setChatMessages(prev => [...prev, userMsg]);
+
+    setIntakeStage('duration');
+    const aiQuestion = t.askDuration || "Since how long have you been experiencing this problem?";
+    const aiMsg = { id: Date.now() + 1, sender: 'ai', text: aiQuestion, stage: 'duration' };
+    setChatMessages(prev => [...prev, aiMsg]);
+    speakText(aiQuestion, selectedLanguage);
+
+    if (sessionToken) {
+      try {
+        fetch('/api/consultation/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionToken,
+            message: `Severity: ${sev}`,
+            language: selectedLanguage,
+            currentStage: 'severity'
+          })
+        }).catch(() => {});
+      } catch (e) {}
+    }
+  };
+
+  const handleSelectDuration = (dur) => {
+    stopSpeaking();
+    unlockAudioContext();
+    setSymptomDuration(dur);
+    const userMsg = { id: Date.now(), sender: 'user', text: `Duration: ${dur}`, stage: 'duration' };
+    setChatMessages(prev => [...prev, userMsg]);
+
+    const complaintStr = extractedSymptoms.length > 0 ? extractedSymptoms.join(', ') : "Reported symptoms";
+    setEditableSummary(prev => ({
+      ...prev,
+      hpi: `${complaintStr} with ${symptomSeverity || 'reported'} severity, lasting ${dur}.`
+    }));
+
+    setSuggestedDocs(prev => {
+      const list = new Set(prev);
+      list.add("Previous Prescriptions");
+      list.add("Relevant Lab/Blood Reports");
+      return Array.from(list);
+    });
+
+    setIntakeStage('complete');
+    const completeMsg = t.intakeCompleteMsg || "Thank you. I have recorded your symptoms, severity, and duration. You can now proceed to review your summary or upload any relevant medical reports.";
+    const aiMsg = { id: Date.now() + 1, sender: 'ai', text: completeMsg, stage: 'complete' };
+    setChatMessages(prev => [...prev, aiMsg]);
+    speakText(completeMsg, selectedLanguage);
+
+    if (sessionToken) {
+      try {
+        fetch('/api/consultation/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionToken,
+            message: `Duration: ${dur}`,
+            language: selectedLanguage,
+            currentStage: 'duration'
+          })
+        }).catch(() => {});
+      } catch (e) {}
+    }
+  };
+
+    const handleProceedFromAiChat = () => {
     stopSpeaking();
     if (consultationMode === 'ayush') {
       navigateTo(selectedAyushSystem || 'ayurveda');
@@ -2945,21 +3132,12 @@ function MediKioskApp() {
       <span className="text-xs text-slate-500 font-bold">🌐 Language:</span>
       <select
         value={selectedLanguage}
-        onChange={(e) => {
-          setSelectedLanguage(e.target.value);
-          showToast(`Language switched to ${e.target.value}`);
-        }}
-        className="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm outline-none cursor-pointer hover:border-brand-500 transition"
+        onChange={(e) => handleLanguageChange(e.target.value)}
+        className="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-800 shadow-sm outline-none cursor-pointer hover:border-brand-500 transition"
       >
-        <option>English</option>
-        <option>Hindi (हिंदी)</option>
-        <option>Marathi (मराठी)</option>
-        <option>Gujarati (ગુજરાતી)</option>
-        <option>Bengali (বাংলা)</option>
-        <option>Tamil (தமிழ்)</option>
-        <option>Telugu (తెలుగు)</option>
-        <option>Kannada (ಕನ್ನಡ)</option>
-        <option>Malayalam (മലയാളം)</option>
+        {AVAILABLE_LANGUAGES.map((lang) => (
+          <option key={lang} value={lang}>{lang}</option>
+        ))}
       </select>
     </div>
   );
@@ -3082,6 +3260,29 @@ function MediKioskApp() {
               </span>
               <h2 className="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">{t.welcomeBack}</h2>
               <p className="text-sm text-slate-500 mt-1">{t.enterEmailPrompt}</p>
+
+              {/* Smooth One-Tap Multilingual Selector */}
+              <div className="mt-4 pt-3 border-t border-slate-100">
+                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                  🌐 Choose Language / भाषा चुनें:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {AVAILABLE_LANGUAGES.map((lang) => (
+                    <button
+                      key={lang}
+                      type="button"
+                      onClick={() => handleLanguageChange(lang)}
+                      className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                        selectedLanguage === lang
+                          ? 'bg-brand-600 text-white shadow-sm ring-2 ring-brand-300'
+                          : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
+                      }`}
+                    >
+                      {lang}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {loginError && (
@@ -3695,6 +3896,131 @@ function MediKioskApp() {
               <div className="flex items-center gap-2 text-xs font-bold text-brand-700 bg-emerald-50 p-3 rounded-xl border border-emerald-200 animate-pulse">
                 <span>🤖</span>
                 <span>AI Health Assistant is analyzing your answer...</span>
+              </div>
+            )}
+
+            {/* Interactive Stage Controls: Symptoms -> Severity -> Duration -> Complete */}
+            {intakeStage === 'symptoms' && (
+              <div className="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-300 space-y-2.5 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-brand-800 flex items-center gap-1.5">
+                    <span>💡</span> <span>{t.clickOrSpeakSymptom || 'Click or speak your symptom:'}</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-brand-700 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
+                    Step 1 of 3
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {(t.samplePills && t.samplePills.length > 0 ? t.samplePills : [
+                    "Severe Headache & Migraine",
+                    "Persistent Fever & Body Ache",
+                    "Joint Pain & Arthritis",
+                    "Digestion / Acidity Problem",
+                    "Cough, Cold & Breathing Issue",
+                    "Skin Rash / Allergy"
+                  ]).map((pillText, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleSelectSymptom(pillText)}
+                      className="px-3.5 py-2 bg-white hover:bg-emerald-100 hover:border-brand-500 border border-emerald-300 text-brand-800 text-xs font-bold rounded-xl shadow-sm transition transform hover:-translate-y-0.5 cursor-pointer text-left"
+                    >
+                      "{pillText}"
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {intakeStage === 'severity' && (
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50/50 p-5 rounded-2xl border-2 border-amber-300 shadow-md space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>⚡</span> <span>{t.selectSeverityLabel || 'Select Symptom Severity:'}</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
+                    Step 2 of 3
+                  </span>
+                </div>
+                <h4 className="text-sm sm:text-base font-extrabold text-slate-900">{t.askSeverity}</h4>
+                <div className="grid grid-cols-3 gap-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => handleSelectSeverity('Mild')}
+                    className="py-3.5 px-3 bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-900 font-extrabold text-sm rounded-xl border-2 border-emerald-400 shadow-sm transition cursor-pointer flex flex-col items-center justify-center gap-1"
+                  >
+                    <span className="text-lg">🟢</span>
+                    <span>Mild</span>
+                    <span className="text-[10px] font-medium text-emerald-700">{selectedLanguage.includes('Hindi') ? 'हल्का' : 'Low impact'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectSeverity('Moderate')}
+                    className="py-3.5 px-3 bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-900 font-extrabold text-sm rounded-xl border-2 border-amber-400 shadow-sm transition cursor-pointer flex flex-col items-center justify-center gap-1"
+                  >
+                    <span className="text-lg">🟡</span>
+                    <span>Moderate</span>
+                    <span className="text-[10px] font-medium text-amber-700">{selectedLanguage.includes('Hindi') ? 'मध्यम' : 'Noticeable'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectSeverity('Severe')}
+                    className="py-3.5 px-3 bg-red-50 hover:bg-red-100 active:scale-95 text-red-900 font-extrabold text-sm rounded-xl border-2 border-red-400 shadow-sm transition cursor-pointer flex flex-col items-center justify-center gap-1"
+                  >
+                    <span className="text-lg">🔴</span>
+                    <span>Severe</span>
+                    <span className="text-[10px] font-medium text-red-700">{selectedLanguage.includes('Hindi') ? 'गंभीर' : 'Urgent'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {intakeStage === 'duration' && (
+              <div className="bg-gradient-to-br from-indigo-50 to-blue-50/50 p-5 rounded-2xl border-2 border-indigo-300 shadow-md space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-indigo-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>⏱️</span> <span>{t.selectDurationLabel || 'Select Symptom Duration:'}</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-indigo-800 bg-indigo-100 px-2 py-0.5 rounded-full">
+                    Step 3 of 3
+                  </span>
+                </div>
+                <h4 className="text-sm sm:text-base font-extrabold text-slate-900">{t.askDuration}</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                  {(t.durationPills && t.durationPills.length > 0 ? t.durationPills : ['1-2 Days', 'About 1 Week', '2-4 Weeks', '> 1 Month']).map((durText, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleSelectDuration(durText)}
+                      className="py-3 px-2 bg-white hover:bg-indigo-100 hover:border-indigo-500 active:scale-95 text-indigo-950 font-bold text-xs rounded-xl border border-indigo-300 shadow-sm transition cursor-pointer text-center"
+                    >
+                      ⏳ {durText}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {intakeStage === 'complete' && (
+              <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-300 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-base shadow">
+                    ✓
+                  </div>
+                  <div>
+                    <h5 className="font-extrabold text-slate-900 text-xs sm:text-sm">{t.intakeCompleteTitle || 'Clinical History Intake Complete'}</h5>
+                    <p className="text-[11px] text-slate-600">
+                      {extractedSymptoms.length > 0 ? extractedSymptoms.join(', ') : 'Symptoms recorded'} • {symptomSeverity || 'Severity noted'} • {symptomDuration || 'Duration noted'}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleProceedFromAiChat}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow transition cursor-pointer whitespace-nowrap"
+                >
+                  {t.completeHistoryBtn || 'Proceed to Review →'}
+                </button>
               </div>
             )}
           </div>
