@@ -3172,7 +3172,6 @@ function MediKioskApp() {
               <h2 className="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">{t.welcomeBack}</h2>
               <p className="text-sm text-slate-500 mt-1">{t.enterEmailPrompt}</p>
 
-              {/* Smooth One-Tap Multilingual Selector */}
               <div className="mt-4 pt-3 border-t border-slate-100">
                 <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
                   🌐 Choose Language / भाषा चुनें:
@@ -3289,7 +3288,6 @@ function MediKioskApp() {
           </div>
         </div>
 
-        {/* Registration Modal (Email + Password + Confirm Password, Simple & Clean) */}
         {isRegisterModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl relative border border-emerald-100 space-y-4 text-left">
@@ -3432,7 +3430,6 @@ function MediKioskApp() {
                   </div>
                 </div>
 
-                {/* Weight Field (Requirement #4) */}
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">{t.weightLabel}</label>
                   <input
@@ -3445,7 +3442,6 @@ function MediKioskApp() {
                 </div>
               </div>
 
-              {/* Profile Photo Upload / Capture Option */}
               <div className="sm:col-span-4 flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-28 h-28 rounded-2xl overflow-hidden border-2 border-dashed border-brand-500 bg-emerald-50 flex items-center justify-center shadow-md">
                   {patientData.photoUrl ? (
@@ -3483,7 +3479,6 @@ function MediKioskApp() {
               </div>
             </div>
 
-            {/* Serious Past Illnesses & Surgeries Field (Requirement #4) */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">{t.pastIllnessesLabel}</label>
               <textarea
@@ -3579,7 +3574,7 @@ function MediKioskApp() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* AYUSH Card */}
+
         <div
           className={`p-6 sm:p-8 rounded-3xl border-2 transition-all duration-300 flex flex-col justify-between shadow-sm hover:shadow-xl ${
             consultationMode === 'ayush'
@@ -3597,7 +3592,6 @@ function MediKioskApp() {
             <h3 className="text-xl font-extrabold text-slate-900">{t.ayushTitle}</h3>
             <p className="text-xs text-slate-500 mt-1 font-medium">Select your preferred AYUSH system for specialized assessment:</p>
 
-            {/* 5 AYUSH System Selector Pills */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-100">
               <button
                 type="button"
@@ -3675,7 +3669,6 @@ function MediKioskApp() {
           </button>
         </div>
 
-        {/* General Clinical Card */}
         <div
           onClick={() => handleSelectModeAndStartConsultation('clinical')}
           className={`p-6 sm:p-8 rounded-3xl border-2 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-xl ${
@@ -3756,7 +3749,6 @@ function MediKioskApp() {
             </div>
           </div>
 
-          {/* Voice Audio Visualizer */}
           {isSpeakingAudio && (
             <div className="bg-emerald-600 text-white px-4 py-2 flex items-center justify-between text-xs font-bold animate-pulse">
               <div className="flex items-center gap-2">
@@ -3769,7 +3761,6 @@ function MediKioskApp() {
             </div>
           )}
 
-          {/* Chat Transcript Area */}
           <div className="flex-1 p-6 space-y-4 overflow-y-auto bg-slate-50/50 max-h-[400px]">
             {chatMessages.map((msg) => (
               <div key={msg.id} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
@@ -3801,7 +3792,6 @@ function MediKioskApp() {
               </div>
             )}
 
-            {/* Interactive Stage Controls: Symptoms -> Severity -> Duration -> Complete */}
             {intakeStage === 'symptoms' && (
               <div className="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-300 space-y-2.5 shadow-sm">
                 <div className="flex items-center justify-between">
@@ -3927,7 +3917,6 @@ function MediKioskApp() {
             )}
           </div>
 
-          {/* Input Box: Microphone & Typing Active Simultaneously */}
           <div className="p-4 bg-white border-t border-slate-200 space-y-3">
             <form
               onSubmit={(e) => {
@@ -3964,7 +3953,6 @@ function MediKioskApp() {
               </button>
             </form>
 
-            {/* Quick action buttons if intake is complete or user wants to advance */}
             <div className="flex items-center justify-between pt-2">
               <button
                 onClick={() => navigateTo('mode')}
@@ -3983,7 +3971,6 @@ function MediKioskApp() {
           </div>
         </div>
 
-        {/* Live Session Summary Sidebar */}
         <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <h4 className="font-extrabold text-slate-900 text-sm flex items-center justify-between border-b pb-3">
             <span>{t.liveSessionSummary}</span>
@@ -4022,7 +4009,6 @@ function MediKioskApp() {
             </div>
           </div>
 
-          {/* Smart Document Request Preview */}
           {suggestedDocs.length > 0 && (
             <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-300 text-xs space-y-1.5">
               <span className="font-extrabold text-brand-900 block flex items-center gap-1">
@@ -4040,9 +4026,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5: AYURVEDIC DASHAVIDHA PARIKSHA (PLAIN LANGUAGE, UNSELECTED BY DEFAULT)
-  // -------------------------------------------------------------
   const renderScreen5Ayush = () => {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
@@ -4100,7 +4083,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Plain-Language Condition Selector */}
         {activeAyushModalCard && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-emerald-200 text-left">
@@ -4178,9 +4160,6 @@ function MediKioskApp() {
   };
 
 
-  // -------------------------------------------------------------
-  // SCREEN 5B: YOGA & NATUROPATHY ASSESSMENT (10-FOLD CLINICAL EVALUATION)
-  // -------------------------------------------------------------
   const renderScreenYoga = () => {
     const yogaData = Object.keys(yogaRatings).length > 0 ? yogaRatings : (window.initialYogaData || {});
     return (
@@ -4239,7 +4218,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Yoga Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'yoga' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-emerald-200 text-left">
@@ -4316,9 +4294,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5C: UNANI MEDICINE ASSESSMENT (TIBB-E-UNANI / 10-FOLD CLINICAL DIAGNOSIS)
-  // -------------------------------------------------------------
   const renderScreenUnani = () => {
     const unaniData = Object.keys(unaniRatings).length > 0 ? unaniRatings : (window.initialUnaniData || {});
     return (
@@ -4377,7 +4352,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Unani Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'unani' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-amber-200 text-left">
@@ -4454,9 +4428,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5D: SIDDHA MEDICINE ASSESSMENT (SIDDHA MARUTHUVAM / 10-FOLD CLINICAL DIAGNOSIS)
-  // -------------------------------------------------------------
   const renderScreenSiddha = () => {
     const siddhaData = Object.keys(siddhaRatings).length > 0 ? siddhaRatings : (window.initialSiddhaData || {});
     return (
@@ -4515,7 +4486,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Siddha Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'siddha' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-teal-200 text-left">
@@ -4592,9 +4562,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5E: HOMEOPATHY ASSESSMENT (ORGANON OF MEDICINE / 10-FOLD CLINICAL DIAGNOSIS)
-  // -------------------------------------------------------------
   const renderScreenHomeopathy = () => {
     const homeopathyData = Object.keys(homeopathyRatings).length > 0 ? homeopathyRatings : (window.initialHomeopathyData || {});
     return (
@@ -4653,7 +4620,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Homeopathy Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'homeopathy' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-cyan-200 text-left">
@@ -4730,9 +4696,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 6: SMART DOCUMENT UPLOAD & REAL PREPROCESSED OCR
-  // -------------------------------------------------------------
   const renderScreen6Documents = () => (
     <div className="max-w-5xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center space-y-6">
       <div className="text-center">
@@ -4743,7 +4706,6 @@ function MediKioskApp() {
         <p className="text-sm text-slate-500 mt-1">{t.docUploadSubtitle}</p>
       </div>
 
-      {/* Smart Document Request Banner (Requirement #8) */}
       {suggestedDocs.length > 0 && (
         <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
           <div className="flex items-center gap-3">
@@ -4759,7 +4721,6 @@ function MediKioskApp() {
         </div>
       )}
 
-      {/* Instant Test Injectors */}
       <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="text-xs text-slate-700 font-bold flex items-center gap-1.5">
           <span>⚡ Instant Test:</span>
@@ -4782,7 +4743,7 @@ function MediKioskApp() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Upload Box */}
+      
         <div className="md:col-span-6 bg-white p-8 rounded-3xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-center shadow-sm">
           <div className="w-16 h-16 rounded-full bg-emerald-50 text-brand-600 flex items-center justify-center text-3xl mb-4">📄</div>
           <h3 className="font-extrabold text-slate-900 text-lg">{t.dragDropText}</h3>
@@ -4808,7 +4769,6 @@ function MediKioskApp() {
           </label>
         </div>
 
-        {/* Uploaded Documents List */}
         <div className="md:col-span-6 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="font-extrabold text-slate-900 text-base mb-4 flex items-center justify-between">
@@ -4858,7 +4818,6 @@ function MediKioskApp() {
         </div>
       </div>
 
-      {/* Editable OCR Verification Box (Requirement #9) */}
       {editingOcrRecord && (
         <div className="bg-emerald-50/90 p-6 rounded-3xl border-2 border-brand-500 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
@@ -4904,9 +4863,6 @@ function MediKioskApp() {
     </div>
   );
 
-  // -------------------------------------------------------------
-  // SCREEN 7: RESTORED OCR PROCESSING SCREEN (TIED TO REAL COMPLETION)
-  // -------------------------------------------------------------
   const renderScreen7OcrLoading = () => (
     <div className="max-w-2xl mx-auto px-4 py-16 flex-grow flex flex-col justify-center items-center text-center space-y-6">
       <div className="relative">
@@ -4922,11 +4878,8 @@ function MediKioskApp() {
     </div>
   );
 
-  // -------------------------------------------------------------
-  // SCREEN 8: EDITABLE CLINICAL SUMMARY & REVIEW (DIRECTLY AFTER OCR)
-  // -------------------------------------------------------------
   const renderScreen8SummaryReview = () => {
-    // Only answered Ayush terms are presented (Requirement #7)
+   
     const activeAyushTerms = Object.entries(ayushRatings).filter(
       ([k, v]) => v.status && !v.status.toLowerCase().startsWith('unselected') && !v.status.toLowerCase().startsWith('pending')
     );
@@ -5026,7 +4979,6 @@ function MediKioskApp() {
               </div>
             </div>
 
-            {/* Answered Ayush Parameters (Excluded if unanswered) */}
             {consultationMode === 'ayush' && activeAyushTerms.length > 0 && (
               <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-emerald-400 shadow-xl space-y-4">
                 <div className="flex items-center justify-between border-b border-emerald-100 pb-3">
@@ -5078,9 +5030,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 9: UNIFIED FINAL SUMMARY & REAL PATIENT-SPECIFIC QR
-  // -------------------------------------------------------------
   const renderScreen9FinalSummary = () => {
     const token = patientData.opdNumber || 'OPD-PENDING';
     const activeAyushTerms = Object.entries(ayushRatings).filter(
@@ -5097,7 +5046,6 @@ function MediKioskApp() {
           <p className="text-sm text-slate-500 mt-1 max-w-lg mx-auto">{t.summaryVerifiedSubtitle}</p>
         </div>
 
-        {/* Printable/Export summary container with Official Logo */}
         <div id="summary-pdf-content" className="w-full bg-white p-6 sm:p-8 rounded-3xl border-2 border-emerald-400 text-left text-xs space-y-4 shadow-xl">
           <div className="flex justify-between border-b border-emerald-200 pb-3 items-center">
             <div className="flex items-center gap-3">
@@ -5132,7 +5080,6 @@ function MediKioskApp() {
             {doctorNotes && <p><strong>Clinician Review Notes:</strong> {doctorNotes}</p>}
           </div>
 
-          {/* Excluded unanswered terms completely */}
           {consultationMode === 'ayush' && activeAyushTerms.length > 0 && (
             <div className="pt-3 border-t border-emerald-200 mt-2">
               <p className="font-bold text-brand-800 mb-2 flex items-center gap-1.5">
@@ -5155,9 +5102,8 @@ function MediKioskApp() {
           </div>
         </div>
 
-        {/* QR Code and Actions Row (Unified Single Screen, Requirements #12 & #13) */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white p-8 rounded-3xl border border-slate-200 shadow-xl">
-          {/* Patient-Specific QR Code */}
+
           <div className="md:col-span-5 flex flex-col items-center text-center space-y-3">
             <span className="px-3 py-1 bg-emerald-50 text-brand-700 text-xs font-extrabold rounded-full border border-emerald-200">
               Patient Verified QR Token
@@ -5168,7 +5114,6 @@ function MediKioskApp() {
             <p className="text-[11px] text-slate-500 max-w-xs">{t.qrScanInstruction}</p>
           </div>
 
-          {/* Buttons: PDF, Print, HIS, and Start New Session */}
           <div className="md:col-span-7 flex flex-col gap-3">
             <button
               onClick={handleDownloadPDF}
