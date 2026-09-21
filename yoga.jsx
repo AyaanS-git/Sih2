@@ -1,8 +1,3 @@
-// ============================================================================
-// MediKiosk — Yoga & Naturopathy (Ministry of AYUSH Standardized System)
-// Complete 10-Fold Assessment for Yogic & Naturopathic Clinical Evaluation
-// ============================================================================
-
 const initialYogaData = {
   Asana: {
     key: 'Asana',
