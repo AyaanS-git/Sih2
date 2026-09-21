@@ -1,4 +1,3 @@
-
 const initialHomeopathyData = {
   LawOfSimilars: {
     key: 'LawOfSimilars',
