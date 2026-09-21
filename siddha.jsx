@@ -1,7 +1,3 @@
-// ============================================================================
-// MediKiosk — Siddha Medicine (Siddha Maruthuvam / Ministry of AYUSH Standardized)
-// Complete 10-Fold Assessment for Siddha Clinical Evaluation & Diagnostic System
-// ============================================================================
 
 const initialSiddhaData = {
   Mukkuttram: {
