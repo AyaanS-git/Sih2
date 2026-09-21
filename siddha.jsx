@@ -1,4 +1,3 @@
-
 const initialSiddhaData = {
   Mukkuttram: {
     key: 'Mukkuttram',
