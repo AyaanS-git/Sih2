@@ -22,7 +22,6 @@ def test_full_pipeline():
     assert reg_res.status_code == 200
     token = reg_res.json['token']
 
-    # Verify password is NOT plaintext in DB
     db = SessionLocal()
     user = db.query(User).filter(User.email == test_email).first()
     assert user is not None
@@ -56,7 +55,6 @@ def test_full_pipeline():
     print("Save Profile status:", prof_res.status_code)
     assert prof_res.status_code == 200
 
-    # Verify sensitive data is encrypted in database
     db = SessionLocal()
     profile = db.query(PatientProfile).filter(PatientProfile.user_id == user.id).first()
     assert profile.full_name_enc != 'Test Patient Name'
@@ -141,7 +139,6 @@ def test_full_pipeline():
     print("Generated QR URL:", qr_url)
     assert len(summary_token) >= 16
 
-    # Verify unselected Ayush terms are excluded from DB
     db = SessionLocal()
     saved_sum = db.query(ClinicalSummary).filter(ClinicalSummary.summary_token == summary_token).first()
     ayush_dict = json.loads(saved_sum.ayush_ratings_json)
