@@ -15,7 +15,6 @@ import models
 from models import User, PatientProfile, ConsultationSession, ChatMessage, UploadedDocument, ClinicalSummary
 import gemini_service
 
-# Create all tables on launch
 Base.metadata.create_all(bind=engine)
 
 app = Flask(__name__, static_folder='.', static_url_path='')
@@ -24,7 +23,6 @@ CORS(app)
 PORT = int(os.getenv('PORT', 8000))
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
-# Helper to get current user from token in Authorization header
 def get_user_from_request(db):
     auth_header = request.headers.get('Authorization', '')
     token = None
@@ -36,8 +34,6 @@ def get_user_from_request(db):
     if not token:
         return None
 
-    # Check if token is user session or consultation session
-    # For user auth, we store session tokens or match user id
     if token.startswith('usr_'):
         user_id = token.replace('usr_', '')
         try:
@@ -46,16 +42,10 @@ def get_user_from_request(db):
             return None
     return None
 
-# -------------------------------------------------------------
-# Static and Page Routes
-# -------------------------------------------------------------
 @app.route('/')
 def serve_index():
     return send_from_directory(DIRECTORY, 'index.html')
 
-# -------------------------------------------------------------
-# Standalone Patient-Specific Verified Summary View (QR Target)
-# -------------------------------------------------------------
 @app.route('/summary/<token>')
 def view_verified_summary(token):
     db = SessionLocal()
@@ -201,9 +191,6 @@ def view_verified_summary(token):
     finally:
         db.close()
 
-# -------------------------------------------------------------
-# Authentication Routes (Simple Email + Password, No OTP)
-# -------------------------------------------------------------
 @app.route('/api/auth/register', methods=['POST'])
 def auth_register():
     data = request.json or {}
@@ -293,9 +280,6 @@ def auth_me():
     finally:
         db.close()
 
-# -------------------------------------------------------------
-# Patient Profile Routes (Persistent & Pre-filled)
-# -------------------------------------------------------------
 @app.route('/api/patient/profile', methods=['GET', 'POST'])
 def patient_profile_handler():
     db = SessionLocal()
@@ -307,11 +291,9 @@ def patient_profile_handler():
             profile = db.query(PatientProfile).filter(PatientProfile.user_id == user.id).first()
             return jsonify({'profile': profile.to_dict() if profile else None})
 
-        # POST: Save / update profile
         data = request.json or {}
         user_id = user.id if user else None
 
-        # If user is not authenticated yet, check if email or user_id provided
         if not user_id and data.get('userId'):
             user_id = int(data['userId'])
 
@@ -343,9 +325,6 @@ def patient_profile_handler():
     finally:
         db.close()
 
-# -------------------------------------------------------------
-# Consultation Session & AI Chat Routes (Strict Gemini Engine)
-# -------------------------------------------------------------
 @app.route('/api/consultation/start', methods=['POST'])
 def consultation_start():
     data = request.json or {}
@@ -401,13 +380,11 @@ def consultation_chat():
             if session.current_stage:
                 current_stage = session.current_stage
 
-        # Process turn with Gemini AI
         result = gemini_service.process_intake_turn(history, user_input, current_stage, language)
 
         next_stage = result.get('next_stage', 'complete')
         ai_reply = result.get('ai_question', '')
 
-        # Persist messages and update stage
         if session:
             session.current_stage = next_stage
             user_msg = ChatMessage(
@@ -445,9 +422,6 @@ def consultation_chat():
     finally:
         db.close()
 
-# -------------------------------------------------------------
-# Documents & OCR Text Routes
-# -------------------------------------------------------------
 @app.route('/api/documents/save', methods=['POST'])
 def save_document():
     data = request.json or {}
@@ -478,10 +452,6 @@ def save_document():
         return jsonify({'error': str(e)}), 500
     finally:
         db.close()
-
-# -------------------------------------------------------------
-# Clinical Summary & Non-Guessable QR Generation
-# -------------------------------------------------------------
 @app.route('/api/summary/save', methods=['POST'])
 def save_clinical_summary():
     data = request.json or {}
@@ -492,7 +462,6 @@ def save_clinical_summary():
     ayush_ratings = data.get('ayushRatings', {})
     consultation_mode = data.get('consultationMode', 'clinical')
 
-    # Filter out unselected Ayush terms entirely
     filtered_ayush = {}
     if consultation_mode == 'ayush' and isinstance(ayush_ratings, dict):
         for k, v in ayush_ratings.items():
@@ -508,7 +477,6 @@ def save_clinical_summary():
     import json
     ayush_json_str = json.dumps(filtered_ayush)
 
-    # Generate unique, non-guessable, cryptographically secure token
     summary_token = secrets.token_urlsafe(20)
 
     db = SessionLocal()
@@ -545,7 +513,6 @@ def save_clinical_summary():
         db.commit()
         db.refresh(summary)
 
-        # Host domain for QR code
         host = request.host_url.rstrip('/')
         qr_url = f"{host}/summary/{summary_token}"
 
@@ -594,9 +561,6 @@ def send_summary_to_his(token):
     finally:
         db.close()
 
-# -------------------------------------------------------------
-# Retained Audio TTS Proxy
-# -------------------------------------------------------------
 @app.route('/api/tts')
 def tts_proxy():
     tl = request.args.get('tl', 'hi')
@@ -625,7 +589,6 @@ def tts_proxy():
     except Exception as e:
         return f"Error: {e}", 500
 
-# Route aliases for convenience
 app.add_url_rule('/api/register', 'api_register_alias', auth_register, methods=['POST'])
 app.add_url_rule('/api/login', 'api_login_alias', auth_login, methods=['POST'])
 app.add_url_rule('/api/save_patient', 'api_save_patient_alias', patient_profile_handler, methods=['POST', 'GET'])
