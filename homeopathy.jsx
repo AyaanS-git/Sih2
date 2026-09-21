@@ -1,7 +1,3 @@
-// ============================================================================
-// MediKiosk — Homeopathy (Ministry of AYUSH & Organon of Medicine Standardized)
-// Complete 10-Fold Assessment for Classical Homeopathic Case Taking & Diagnosis
-// ============================================================================
 
 const initialHomeopathyData = {
   LawOfSimilars: {
