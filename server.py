@@ -53,10 +53,6 @@ def get_user_from_request(db):
 def serve_index():
     return send_from_directory(DIRECTORY, 'index.html')
 
-@app.route('/<path:filename>')
-def serve_static(filename):
-    return send_from_directory(DIRECTORY, filename)
-
 # -------------------------------------------------------------
 # Standalone Patient-Specific Verified Summary View (QR Target)
 # -------------------------------------------------------------
@@ -628,6 +624,15 @@ def tts_proxy():
             }
     except Exception as e:
         return f"Error: {e}", 500
+
+# Route aliases for convenience
+app.add_url_rule('/api/register', 'api_register_alias', auth_register, methods=['POST'])
+app.add_url_rule('/api/login', 'api_login_alias', auth_login, methods=['POST'])
+app.add_url_rule('/api/save_patient', 'api_save_patient_alias', patient_profile_handler, methods=['POST', 'GET'])
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(DIRECTORY, filename)
 
 if __name__ == '__main__':
     print(f"MediKiosk Flask Server running at http://localhost:{PORT}")
