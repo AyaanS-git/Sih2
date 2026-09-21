@@ -1,6 +1,5 @@
 const { useState, useEffect, useRef } = React;
 
-// Global Audio Reference
 let globalAudioPlayer = null;
 let isAudioContextUnlocked = false;
 
@@ -18,9 +17,6 @@ function unlockAudioContext() {
   }
 }
 
-// ============================================================================
-// MediKiosk Multilingual Translation Dictionary (i18n)
-// ============================================================================
 const translations = {
   'English': {
     samplePills: ["Headache & Acidity", "Stomach pain & burning", "Cough & Chest congestion", "Fever & body ache", "Tiredness & weakness"],
@@ -1113,16 +1109,13 @@ const getI18n = (lang) => {
   return { ...base, ...current };
 };
 
-// ============================================================================
-// Classical Dashavidha Pariksha Data (Initially unselected with plain-language descriptions)
-// ============================================================================
 const initialClassicalAyushData = {
   Prakriti: {
     key: 'Prakriti',
     term: 'Body Constitution (Prakriti)',
     sanskrit: 'प्रकृति',
     icon: '⚖️',
-    status: '', // Unselected by default
+    status: '',
     desc: 'Inborn mind-body constitution and dominant bio-energies (Dosha profile).',
     plainDesc: {
       'English': 'Your natural physical and mental constitution from birth.',
@@ -1296,8 +1289,6 @@ const initialClassicalAyushData = {
 };
 
 
-
-// Embedded 4 AYUSH Systems Datasets (Guaranteed non-empty)
 const initialYogaData = {
   Asana: {
     key: 'Asana',
@@ -2027,9 +2018,6 @@ const initialHomeopathyData = {
   }
 };
 
-// ============================================================================
-// Natural Medical Entity Parser (Extracts entities from raw OCR & speech)
-// ============================================================================
 function extractCleanSymptoms(input) {
   if (!input) return [];
   const text = input.toLowerCase();
@@ -2139,9 +2127,6 @@ function extractMedicalEntitiesFromOcr(rawText, fileName = "") {
   };
 }
 
-// ============================================================================
-// Canvas-based OCR Image Preprocessor (Crop/Contrast/Grayscale/Binarize)
-// ============================================================================
 function preprocessImageForOcr(imageFile) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -2157,7 +2142,6 @@ function preprocessImageForOcr(imageFile) {
         const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const data = imgData.data;
 
-        // Step 1: Grayscale & find min/max luminance for contrast stretch
         let minLum = 255;
         let maxLum = 0;
         const lumArr = new Float32Array(data.length / 4);
@@ -2171,10 +2155,9 @@ function preprocessImageForOcr(imageFile) {
 
         const range = (maxLum - minLum) || 1;
 
-        // Step 2: Contrast stretch & slight binarization boost for clean text
         for (let i = 0; i < data.length; i += 4) {
           let stretched = ((lumArr[i / 4] - minLum) / range) * 255;
-          // Gentle adaptive thresholding to clarify dark ink on paper
+
           if (stretched < 140) {
             stretched = Math.max(0, stretched * 0.7);
           } else {
@@ -2195,17 +2178,13 @@ function preprocessImageForOcr(imageFile) {
   });
 }
 
-// ============================================================================
-// Main MediKiosk Application Component
-// ============================================================================
 function MediKioskApp() {
-  // Real Client-Side Route State
+
   const [currentRoute, setCurrentRoute] = useState(() => {
     const hash = window.location.hash.replace(/^#\/?/, '');
     return hash || 'login';
   });
 
-  // User Auth State
   const [authToken, setAuthToken] = useState(() => localStorage.getItem('medikiosk_token') || '');
   const [currentUser, setCurrentUser] = useState(null);
   const [loginEmail, setLoginEmail] = useState('');
@@ -2215,12 +2194,10 @@ function MediKioskApp() {
   const [registerForm, setRegisterForm] = useState({ email: '', password: '', confirmPassword: '' });
   const [registerError, setRegisterError] = useState('');
 
-  // Consultation Session State
   const [sessionToken, setSessionToken] = useState('');
-  const [consultationMode, setConsultationMode] = useState(null); // 'ayush' | 'clinical'
-  const [intakeStage, setIntakeStage] = useState('symptoms'); // symptoms -> severity -> duration -> history -> complete
+  const [consultationMode, setConsultationMode] = useState(null); 
+  const [intakeStage, setIntakeStage] = useState('symptoms'); 
 
-  // Patient Identification (Screen 2)
   const [patientData, setPatientData] = useState({
     fullName: '',
     age: '',
@@ -2246,15 +2223,12 @@ function MediKioskApp() {
     'Malayalam (മലയാളം)'
   ];
 
-  // Global Language Selector
   const [selectedLanguage, setSelectedLanguage] = useState(() => localStorage.getItem('medikiosk_language') || 'English');
 
-  // Speech Voice State
   const [isSpeakingAudio, setIsSpeakingAudio] = useState(false);
   const [currentSpokenText, setCurrentSpokenText] = useState('');
   const [isMicListening, setIsMicListening] = useState(false);
 
-  // AI Chat & Intake State
   const [chatMessages, setChatMessages] = useState([]);
   const [userComplaintInput, setUserComplaintInput] = useState('');
   const [isAiLoading, setIsAiLoading] = useState(false);
@@ -2264,25 +2238,21 @@ function MediKioskApp() {
   const [previousHistory, setPreviousHistory] = useState('');
   const [suggestedDocs, setSuggestedDocs] = useState([]);
 
-  // Ayurvedic Assessment State (Screen 5)
   const [ayushRatings, setAyushRatings] = useState(initialClassicalAyushData);
   const [activeAyushModalCard, setActiveAyushModalCard] = useState(null);
 
-  // AYUSH Sub-system Selection & Assessment States (Yoga, Unani, Siddha, Homeopathy)
-  const [selectedAyushSystem, setSelectedAyushSystem] = useState('ayurveda'); // 'ayurveda' | 'yoga' | 'unani' | 'siddha' | 'homeopathy'
+  const [selectedAyushSystem, setSelectedAyushSystem] = useState('ayurveda'); 
   const [yogaRatings, setYogaRatings] = useState(initialYogaData);
   const [unaniRatings, setUnaniRatings] = useState(initialUnaniData);
   const [siddhaRatings, setSiddhaRatings] = useState(initialSiddhaData);
   const [homeopathyRatings, setHomeopathyRatings] = useState(initialHomeopathyData);
   const [activeSystemModalCard, setActiveSystemModalCard] = useState(null);
 
-  // Document Upload & OCR State (Screen 6 & 7)
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isOcrProcessing, setIsOcrProcessing] = useState(false);
   const [ocrProgressText, setOcrProgressText] = useState('');
-  const [editingOcrRecord, setEditingOcrRecord] = useState(null); // Document currently in edit box
+  const [editingOcrRecord, setEditingOcrRecord] = useState(null); 
 
-  // Clinical Summary & Verification State (Screen 8 & 9)
   const [editableSummary, setEditableSummary] = useState({
     chiefComplaint: '',
     hpi: '',
@@ -2296,7 +2266,6 @@ function MediKioskApp() {
   const [finalQrUrl, setFinalQrUrl] = useState('');
   const [isHisSynced, setIsHisSynced] = useState(false);
 
-  // Toast Notification System
   const [toastMessage, setToastMessage] = useState(null);
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -2305,9 +2274,6 @@ function MediKioskApp() {
 
   const t = getI18n(selectedLanguage);
 
-  // -------------------------------------------------------------
-  // Real Client-Side Routing Synchronization
-  // -------------------------------------------------------------
   const navigateTo = (route, replace = false) => {
     stopSpeaking();
     if (replace) {
@@ -2335,7 +2301,6 @@ function MediKioskApp() {
     };
   }, []);
 
-  // Unlock Web Audio on initial user gesture
   useEffect(() => {
     const handleFirstTouch = () => {
       unlockAudioContext();
@@ -2349,8 +2314,6 @@ function MediKioskApp() {
       window.removeEventListener('touchstart', handleFirstTouch);
     };
   }, []);
-
-  // Check saved token and pre-fill profile on launch
   useEffect(() => {
     if (authToken) {
       fetch('/api/auth/me', {
@@ -2372,9 +2335,6 @@ function MediKioskApp() {
     }
   }, [authToken]);
 
-  // -------------------------------------------------------------
-  // Web Speech API Voice Engine (TTS)
-  // -------------------------------------------------------------
   const stopSpeaking = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -2407,7 +2367,6 @@ function MediKioskApp() {
     const ttsCode = langCodeMap[lang] || 'hi';
     const cleanText = textToSpeak.replace(/[\u{1F300}-\u{1FAFF}]/gu, '').slice(0, 180);
 
-    // Primary: High-clarity native multilingual streaming from /api/tts backend
     try {
       const audioUrl = `/api/tts?tl=${ttsCode}&q=${encodeURIComponent(cleanText)}`;
       const audio = new Audio(audioUrl);
@@ -2424,7 +2383,7 @@ function MediKioskApp() {
       };
 
       audio.onerror = () => {
-        // Fallback: Web Speech API
+
         if ('speechSynthesis' in window) {
           const utterance = new SpeechSynthesisUtterance(cleanText);
           utterance.lang = `${ttsCode}-IN`;
@@ -2458,9 +2417,6 @@ function MediKioskApp() {
     }
   };
 
-  // -------------------------------------------------------------
-  // Web Speech API Voice Engine (STT / Mic)
-  // -------------------------------------------------------------
   const toggleMicListening = () => {
     unlockAudioContext();
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2492,7 +2448,7 @@ function MediKioskApp() {
             setUserComplaintInput(transcript);
             setIsMicListening(false);
             showToast(`Voice captured: "${transcript}"`);
-            // Automatically submit captured speech
+
             handleSendUserMessage(transcript);
           };
 
@@ -2509,10 +2465,6 @@ function MediKioskApp() {
       showToast("Web Speech Recognition is not supported on this browser. Please type your answer.");
     }
   };
-
-  // -------------------------------------------------------------
-  // Authentication Actions
-  // -------------------------------------------------------------
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
@@ -2580,14 +2532,10 @@ function MediKioskApp() {
     }
   };
 
-  // -------------------------------------------------------------
-  // Patient Profile & Consultation Start
-  // -------------------------------------------------------------
   const handleSavePatientProfile = async (e) => {
     e.preventDefault();
     unlockAudioContext();
 
-    // Persist profile to backend
     try {
       const res = await fetch('/api/patient/profile', {
         method: 'POST',
@@ -2628,7 +2576,6 @@ function MediKioskApp() {
       }
     } catch (e) {}
 
-    // Initial Greeting message from AI in selected language
     const greeting = t.greetingMsg;
     setChatMessages([
       { id: Date.now(), sender: 'ai', text: greeting, stage: 'symptoms' }
@@ -2636,15 +2583,12 @@ function MediKioskApp() {
     setIntakeStage('symptoms');
 
     navigateTo('ai-chat');
-    // Speak greeting aloud
+
     setTimeout(() => {
       speakText(greeting, selectedLanguage);
     }, 400);
   };
 
-  // -------------------------------------------------------------
-  // Real Gemini AI Chat Intake Loop (Strict State Engine)
-  // -------------------------------------------------------------
   const handleSendUserMessage = async (customText) => {
     const messageText = (customText !== undefined ? customText : userComplaintInput).trim();
     if (!messageText || isAiLoading) return;
@@ -2653,7 +2597,7 @@ function MediKioskApp() {
     setUserComplaintInput('');
     setIsAiLoading(true);
 
-    // Optimistically show user message
+
     const userMsg = { id: Date.now(), sender: 'user', text: messageText, stage: intakeStage };
     setChatMessages(prev => [...prev, userMsg]);
 
@@ -2675,7 +2619,6 @@ function MediKioskApp() {
 
       setIntakeStage(nextStage);
 
-      // Collect clinical entities into state
       if (data.extractedSymptoms && data.extractedSymptoms.length > 0) {
         setExtractedSymptoms(prev => Array.from(new Set([...prev, ...data.extractedSymptoms])));
       }
@@ -2686,7 +2629,6 @@ function MediKioskApp() {
         setSuggestedDocs(data.suggestedDocs);
       }
 
-      // Update editable summary fields progressively
       setEditableSummary(prev => ({
         ...prev,
         chiefComplaint: data.chiefComplaint || (extractedSymptoms.length > 0 ? extractedSymptoms.join(', ') : prev.chiefComplaint),
@@ -2694,11 +2636,9 @@ function MediKioskApp() {
         pastHistory: data.previousHistory || prev.pastHistory
       }));
 
-      // Add AI response to chat
       const aiMsg = { id: Date.now() + 1, sender: 'ai', text: aiReply, stage: nextStage };
       setChatMessages(prev => [...prev, aiMsg]);
 
-      // Speak AI question in user language
       speakText(aiReply, selectedLanguage);
     } catch (err) {
       showToast("Error connecting to AI intake assistant.");
@@ -2707,9 +2647,6 @@ function MediKioskApp() {
     }
   };
 
-  // Advance after AI Chat finishes
-
-  // Smooth Multilingual Switcher with Audio Synchronization
   const handleLanguageChange = (newLang) => {
     stopSpeaking();
     setSelectedLanguage(newLang);
@@ -2718,7 +2655,7 @@ function MediKioskApp() {
     } catch (e) {}
 
     const newT = getI18n(newLang);
-    // If on AI Chat and only initial greeting is present, refresh it to new language
+ 
     if (chatMessages.length <= 1) {
       const initialMsg = { id: Date.now(), sender: 'ai', text: newT.greetingMsg, stage: 'symptoms' };
       setChatMessages([initialMsg]);
@@ -2729,7 +2666,7 @@ function MediKioskApp() {
     showToast(`Language switched to ${newLang}`);
   };
 
-  // Clinical AI Assistant Stage Handlers (Pill Options -> Severity -> Duration -> Complete)
+
   const handleSelectSymptom = async (symptomText) => {
     stopSpeaking();
     unlockAudioContext();
@@ -2843,9 +2780,6 @@ function MediKioskApp() {
     }
   };
 
-  // -------------------------------------------------------------
-  // Real OCR Pipeline with Preprocessing & Editable Verification
-  // -------------------------------------------------------------
   const handleOcrFileSelect = async (file) => {
     if (!file) return;
     unlockAudioContext();
@@ -2857,7 +2791,7 @@ function MediKioskApp() {
       let imageUri = null;
 
       if (file.type.includes('image')) {
-        // Run Canvas preprocessing (Grayscale + Contrast stretch + Binarize)
+
         imageUri = await preprocessImageForOcr(file);
       }
 
@@ -2881,7 +2815,6 @@ function MediKioskApp() {
 
       const parsed = extractMedicalEntitiesFromOcr(extractedRaw, file.name);
 
-      // Open in editable verification box
       setEditingOcrRecord({
         name: file.name,
         category: parsed.category,
@@ -2915,7 +2848,6 @@ function MediKioskApp() {
 
     setUploadedFiles(prev => [...prev, newRecord]);
 
-    // Update clinical summary fields with verified medications
     setEditableSummary(prev => ({
       ...prev,
       medications: editingOcrRecord.extractedMeds && editingOcrRecord.extractedMeds.length > 0
@@ -2926,7 +2858,6 @@ function MediKioskApp() {
         : prev.pastHistory
     }));
 
-    // Persist document to backend
     try {
       await fetch('/api/documents/save', {
         method: 'POST',
@@ -2942,7 +2873,6 @@ function MediKioskApp() {
     showToast(`✅ Document "${newRecord.name}" attached successfully!`);
   };
 
-  // Sample Record Injector for Instant Testing
   const injectSampleRecord = (sampleType) => {
     let sampleData = {};
     if (sampleType === 'prescription') {
@@ -2975,14 +2905,10 @@ function MediKioskApp() {
     showToast(`Sample record loaded into editable box for review.`);
   };
 
-  // Proceed from Documents to Summary Preview
   const handleProceedToSummary = () => {
     navigateTo('summary-review');
   };
 
-  // -------------------------------------------------------------
-  // Final Summary Verification & Non-Guessable QR Generation
-  // -------------------------------------------------------------
   const handleVerifyAndFinalizeSummary = async () => {
     unlockAudioContext();
     showToast("Finalizing and generating patient QR code...");
@@ -3017,7 +2943,6 @@ function MediKioskApp() {
     }
   };
 
-  // Generate QR Code on Screen 9
   useEffect(() => {
     if (currentRoute === 'final-summary') {
       setTimeout(() => {
@@ -3038,7 +2963,6 @@ function MediKioskApp() {
     }
   }, [currentRoute, finalQrUrl, finalSummaryToken]);
 
-  // Send to Hospital System (HIS)
   const handleSendToHis = async () => {
     if (!finalSummaryToken) {
       setIsHisSynced(true);
@@ -3057,7 +2981,6 @@ function MediKioskApp() {
     }
   };
 
-  // PDF Export
   const handleDownloadPDF = () => {
     showToast("Generating official clinical summary PDF...");
     const element = document.getElementById('summary-pdf-content');
@@ -3082,7 +3005,6 @@ function MediKioskApp() {
     }
   };
 
-  // Start New Session
   const handleStartNewSession = () => {
     stopSpeaking();
     setSessionToken('');
@@ -3112,9 +3034,6 @@ function MediKioskApp() {
     navigateTo('patient-info');
   };
 
-  // -------------------------------------------------------------
-  // UI Components Preserving 100% Exact Visual Style
-  // -------------------------------------------------------------
   const renderMediKioskLogo = (sizeClass = "w-11 h-11") => (
     <img
       src="logo.png"
@@ -3142,7 +3061,6 @@ function MediKioskApp() {
     </div>
   );
 
-  // Stepper Header
   const renderStepperHeader = () => {
     if (currentRoute === 'login') return null;
 
@@ -3224,7 +3142,6 @@ function MediKioskApp() {
     );
   };
 
-  // Toast Notification
   const renderToast = () => {
     if (!toastMessage) return null;
     return (
@@ -3235,9 +3152,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 1: WELCOME & SIMPLE AUTH (EMAIL + PASSWORD, NO OTP)
-  // -------------------------------------------------------------
   const renderScreen1Welcome = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col justify-between" onClick={unlockAudioContext}>
@@ -3261,7 +3175,6 @@ function MediKioskApp() {
               <h2 className="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">{t.welcomeBack}</h2>
               <p className="text-sm text-slate-500 mt-1">{t.enterEmailPrompt}</p>
 
-              {/* Smooth One-Tap Multilingual Selector */}
               <div className="mt-4 pt-3 border-t border-slate-100">
                 <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
                   🌐 Choose Language / भाषा चुनें:
@@ -3378,7 +3291,6 @@ function MediKioskApp() {
           </div>
         </div>
 
-        {/* Registration Modal (Email + Password + Confirm Password, Simple & Clean) */}
         {isRegisterModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl relative border border-emerald-100 space-y-4 text-left">
@@ -3460,9 +3372,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 2: PATIENT IDENTIFICATION (PERSONAL INFO BEFORE MODE)
-  // -------------------------------------------------------------
   const renderScreen2PatientInfo = () => {
     return (
       <div className="max-w-3xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
@@ -3524,7 +3433,6 @@ function MediKioskApp() {
                   </div>
                 </div>
 
-                {/* Weight Field (Requirement #4) */}
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">{t.weightLabel}</label>
                   <input
@@ -3537,7 +3445,6 @@ function MediKioskApp() {
                 </div>
               </div>
 
-              {/* Profile Photo Upload / Capture Option */}
               <div className="sm:col-span-4 flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-28 h-28 rounded-2xl overflow-hidden border-2 border-dashed border-brand-500 bg-emerald-50 flex items-center justify-center shadow-md">
                   {patientData.photoUrl ? (
@@ -3575,7 +3482,6 @@ function MediKioskApp() {
               </div>
             </div>
 
-            {/* Serious Past Illnesses & Surgeries Field (Requirement #4) */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">{t.pastIllnessesLabel}</label>
               <textarea
@@ -3660,9 +3566,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 3: CONSULTATION MODE SELECTION (AYUSH VS CLINICAL)
-  // -------------------------------------------------------------
   const renderScreen3Mode = () => (
     <div className="max-w-4xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
       <div className="text-center mb-8">
@@ -3674,7 +3577,7 @@ function MediKioskApp() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* AYUSH Card */}
+
         <div
           className={`p-6 sm:p-8 rounded-3xl border-2 transition-all duration-300 flex flex-col justify-between shadow-sm hover:shadow-xl ${
             consultationMode === 'ayush'
@@ -3692,7 +3595,6 @@ function MediKioskApp() {
             <h3 className="text-xl font-extrabold text-slate-900">{t.ayushTitle}</h3>
             <p className="text-xs text-slate-500 mt-1 font-medium">Select your preferred AYUSH system for specialized assessment:</p>
 
-            {/* 5 AYUSH System Selector Pills */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-100">
               <button
                 type="button"
@@ -3769,8 +3671,6 @@ function MediKioskApp() {
             Start AYUSH Consultation ({(selectedAyushSystem || 'ayurveda').toUpperCase()}) →
           </button>
         </div>
-
-        {/* General Clinical Card */}
         <div
           onClick={() => handleSelectModeAndStartConsultation('clinical')}
           className={`p-6 sm:p-8 rounded-3xl border-2 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-xl ${
@@ -3821,9 +3721,6 @@ function MediKioskApp() {
     </div>
   );
 
-  // -------------------------------------------------------------
-  // SCREEN 4: AI HEALTH ASSISTANT (STRICT 4-STAGE GEMINI ENGINE)
-  // -------------------------------------------------------------
   const renderScreen4AiChat = () => {
     return (
       <div className="max-w-6xl mx-auto px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -3854,7 +3751,6 @@ function MediKioskApp() {
             </div>
           </div>
 
-          {/* Voice Audio Visualizer */}
           {isSpeakingAudio && (
             <div className="bg-emerald-600 text-white px-4 py-2 flex items-center justify-between text-xs font-bold animate-pulse">
               <div className="flex items-center gap-2">
@@ -3867,7 +3763,6 @@ function MediKioskApp() {
             </div>
           )}
 
-          {/* Chat Transcript Area */}
           <div className="flex-1 p-6 space-y-4 overflow-y-auto bg-slate-50/50 max-h-[400px]">
             {chatMessages.map((msg) => (
               <div key={msg.id} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
@@ -3899,7 +3794,6 @@ function MediKioskApp() {
               </div>
             )}
 
-            {/* Interactive Stage Controls: Symptoms -> Severity -> Duration -> Complete */}
             {intakeStage === 'symptoms' && (
               <div className="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-300 space-y-2.5 shadow-sm">
                 <div className="flex items-center justify-between">
@@ -4025,7 +3919,6 @@ function MediKioskApp() {
             )}
           </div>
 
-          {/* Input Box: Microphone & Typing Active Simultaneously */}
           <div className="p-4 bg-white border-t border-slate-200 space-y-3">
             <form
               onSubmit={(e) => {
@@ -4062,7 +3955,6 @@ function MediKioskApp() {
               </button>
             </form>
 
-            {/* Quick action buttons if intake is complete or user wants to advance */}
             <div className="flex items-center justify-between pt-2">
               <button
                 onClick={() => navigateTo('mode')}
@@ -4081,7 +3973,6 @@ function MediKioskApp() {
           </div>
         </div>
 
-        {/* Live Session Summary Sidebar */}
         <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <h4 className="font-extrabold text-slate-900 text-sm flex items-center justify-between border-b pb-3">
             <span>{t.liveSessionSummary}</span>
@@ -4120,7 +4011,6 @@ function MediKioskApp() {
             </div>
           </div>
 
-          {/* Smart Document Request Preview */}
           {suggestedDocs.length > 0 && (
             <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-300 text-xs space-y-1.5">
               <span className="font-extrabold text-brand-900 block flex items-center gap-1">
@@ -4138,9 +4028,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5: AYURVEDIC DASHAVIDHA PARIKSHA (PLAIN LANGUAGE, UNSELECTED BY DEFAULT)
-  // -------------------------------------------------------------
   const renderScreen5Ayush = () => {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
@@ -4198,7 +4085,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Plain-Language Condition Selector */}
         {activeAyushModalCard && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-emerald-200 text-left">
@@ -4276,9 +4162,6 @@ function MediKioskApp() {
   };
 
 
-  // -------------------------------------------------------------
-  // SCREEN 5B: YOGA & NATUROPATHY ASSESSMENT (10-FOLD CLINICAL EVALUATION)
-  // -------------------------------------------------------------
   const renderScreenYoga = () => {
     const yogaData = Object.keys(yogaRatings).length > 0 ? yogaRatings : (window.initialYogaData || {});
     return (
@@ -4337,7 +4220,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Yoga Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'yoga' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-emerald-200 text-left">
@@ -4414,9 +4296,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5C: UNANI MEDICINE ASSESSMENT (TIBB-E-UNANI / 10-FOLD CLINICAL DIAGNOSIS)
-  // -------------------------------------------------------------
   const renderScreenUnani = () => {
     const unaniData = Object.keys(unaniRatings).length > 0 ? unaniRatings : (window.initialUnaniData || {});
     return (
@@ -4475,7 +4354,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Unani Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'unani' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-amber-200 text-left">
@@ -4552,9 +4430,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5D: SIDDHA MEDICINE ASSESSMENT (SIDDHA MARUTHUVAM / 10-FOLD CLINICAL DIAGNOSIS)
-  // -------------------------------------------------------------
   const renderScreenSiddha = () => {
     const siddhaData = Object.keys(siddhaRatings).length > 0 ? siddhaRatings : (window.initialSiddhaData || {});
     return (
@@ -4613,7 +4488,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Siddha Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'siddha' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-teal-200 text-left">
@@ -4690,9 +4564,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 5E: HOMEOPATHY ASSESSMENT (ORGANON OF MEDICINE / 10-FOLD CLINICAL DIAGNOSIS)
-  // -------------------------------------------------------------
   const renderScreenHomeopathy = () => {
     const homeopathyData = Object.keys(homeopathyRatings).length > 0 ? homeopathyRatings : (window.initialHomeopathyData || {});
     return (
@@ -4751,7 +4622,6 @@ function MediKioskApp() {
           })}
         </div>
 
-        {/* Modal: Homeopathy Option Selector */}
         {activeSystemModalCard && activeSystemModalCard.system === 'homeopathy' && (
           <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative border border-cyan-200 text-left">
@@ -4828,9 +4698,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 6: SMART DOCUMENT UPLOAD & REAL PREPROCESSED OCR
-  // -------------------------------------------------------------
   const renderScreen6Documents = () => (
     <div className="max-w-5xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center space-y-6">
       <div className="text-center">
@@ -4841,7 +4708,6 @@ function MediKioskApp() {
         <p className="text-sm text-slate-500 mt-1">{t.docUploadSubtitle}</p>
       </div>
 
-      {/* Smart Document Request Banner (Requirement #8) */}
       {suggestedDocs.length > 0 && (
         <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
           <div className="flex items-center gap-3">
@@ -4857,7 +4723,6 @@ function MediKioskApp() {
         </div>
       )}
 
-      {/* Instant Test Injectors */}
       <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="text-xs text-slate-700 font-bold flex items-center gap-1.5">
           <span>⚡ Instant Test:</span>
@@ -4906,7 +4771,6 @@ function MediKioskApp() {
           </label>
         </div>
 
-        {/* Uploaded Documents List */}
         <div className="md:col-span-6 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="font-extrabold text-slate-900 text-base mb-4 flex items-center justify-between">
@@ -4955,8 +4819,6 @@ function MediKioskApp() {
           </div>
         </div>
       </div>
-
-      {/* Editable OCR Verification Box (Requirement #9) */}
       {editingOcrRecord && (
         <div className="bg-emerald-50/90 p-6 rounded-3xl border-2 border-brand-500 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
@@ -5002,9 +4864,6 @@ function MediKioskApp() {
     </div>
   );
 
-  // -------------------------------------------------------------
-  // SCREEN 7: RESTORED OCR PROCESSING SCREEN (TIED TO REAL COMPLETION)
-  // -------------------------------------------------------------
   const renderScreen7OcrLoading = () => (
     <div className="max-w-2xl mx-auto px-4 py-16 flex-grow flex flex-col justify-center items-center text-center space-y-6">
       <div className="relative">
@@ -5020,11 +4879,8 @@ function MediKioskApp() {
     </div>
   );
 
-  // -------------------------------------------------------------
-  // SCREEN 8: EDITABLE CLINICAL SUMMARY & REVIEW (DIRECTLY AFTER OCR)
-  // -------------------------------------------------------------
   const renderScreen8SummaryReview = () => {
-    // Only answered Ayush terms are presented (Requirement #7)
+
     const activeAyushTerms = Object.entries(ayushRatings).filter(
       ([k, v]) => v.status && !v.status.toLowerCase().startsWith('unselected') && !v.status.toLowerCase().startsWith('pending')
     );
@@ -5123,8 +4979,6 @@ function MediKioskApp() {
                 </div>
               </div>
             </div>
-
-            {/* Answered Ayush Parameters (Excluded if unanswered) */}
             {consultationMode === 'ayush' && activeAyushTerms.length > 0 && (
               <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-emerald-400 shadow-xl space-y-4">
                 <div className="flex items-center justify-between border-b border-emerald-100 pb-3">
@@ -5176,9 +5030,6 @@ function MediKioskApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // SCREEN 9: UNIFIED FINAL SUMMARY & REAL PATIENT-SPECIFIC QR
-  // -------------------------------------------------------------
   const renderScreen9FinalSummary = () => {
     const token = patientData.opdNumber || 'OPD-PENDING';
     const activeAyushTerms = Object.entries(ayushRatings).filter(
@@ -5195,7 +5046,6 @@ function MediKioskApp() {
           <p className="text-sm text-slate-500 mt-1 max-w-lg mx-auto">{t.summaryVerifiedSubtitle}</p>
         </div>
 
-        {/* Printable/Export summary container with Official Logo */}
         <div id="summary-pdf-content" className="w-full bg-white p-6 sm:p-8 rounded-3xl border-2 border-emerald-400 text-left text-xs space-y-4 shadow-xl">
           <div className="flex justify-between border-b border-emerald-200 pb-3 items-center">
             <div className="flex items-center gap-3">
@@ -5230,7 +5080,6 @@ function MediKioskApp() {
             {doctorNotes && <p><strong>Clinician Review Notes:</strong> {doctorNotes}</p>}
           </div>
 
-          {/* Excluded unanswered terms completely */}
           {consultationMode === 'ayush' && activeAyushTerms.length > 0 && (
             <div className="pt-3 border-t border-emerald-200 mt-2">
               <p className="font-bold text-brand-800 mb-2 flex items-center gap-1.5">
@@ -5253,9 +5102,8 @@ function MediKioskApp() {
           </div>
         </div>
 
-        {/* QR Code and Actions Row (Unified Single Screen, Requirements #12 & #13) */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white p-8 rounded-3xl border border-slate-200 shadow-xl">
-          {/* Patient-Specific QR Code */}
+
           <div className="md:col-span-5 flex flex-col items-center text-center space-y-3">
             <span className="px-3 py-1 bg-emerald-50 text-brand-700 text-xs font-extrabold rounded-full border border-emerald-200">
               Patient Verified QR Token
@@ -5266,7 +5114,6 @@ function MediKioskApp() {
             <p className="text-[11px] text-slate-500 max-w-xs">{t.qrScanInstruction}</p>
           </div>
 
-          {/* Buttons: PDF, Print, HIS, and Start New Session */}
           <div className="md:col-span-7 flex flex-col gap-3">
             <button
               onClick={handleDownloadPDF}
