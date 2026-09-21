@@ -18,7 +18,6 @@ engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
 
-# Fernet encryption for sensitive medical and PII fields
 enc_key = os.getenv('ENCRYPTION_KEY')
 if not enc_key:
     enc_key = Fernet.generate_key().decode()
