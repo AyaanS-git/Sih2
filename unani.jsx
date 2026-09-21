@@ -1,8 +1,3 @@
-// ============================================================================
-// MediKiosk — Unani Medicine (Tibb-e-Unani / Ministry of AYUSH Standardized)
-// Complete 10-Fold Assessment for Unani Clinical Evaluation & Diagnosis
-// ============================================================================
-
 const initialUnaniData = {
   Mizaj: {
     key: 'Mizaj',
