@@ -1450,7 +1450,7 @@ const initialUnaniData = {
       { label: 'Mautadil / Balanced Equilibrium (معتدل / Perfectly Balanced)', plain: 'Equilibrium of all four primary qualities with robust physiological harmony' }
     ]
   },
-  Su-e-Mizaj: {
+  'Su-e-Mizaj': {
     key: 'Su-e-Mizaj',
     term: 'Current Qualitative Dystemperament (Su-e-Mizaj)',
     sanskrit: 'سوء مزاج / Active Imbalance',
