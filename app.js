@@ -1115,7 +1115,7 @@ const initialClassicalAyushData = {
     term: 'Body Constitution (Prakriti)',
     sanskrit: 'प्रकृति',
     icon: '⚖️',
-    status: '', // Unselected by default
+    status: '', 
     desc: 'Inborn mind-body constitution and dominant bio-energies (Dosha profile).',
     plainDesc: {
       'English': 'Your natural physical and mental constitution from birth.',
